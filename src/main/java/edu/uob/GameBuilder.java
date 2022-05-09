@@ -58,6 +58,7 @@ public class GameBuilder {
             makeAction(action,model);
         }
 
+        model.setTrigger();
     }
 
     public static class MyFilter implements NodeFilter {
@@ -89,6 +90,7 @@ public class GameBuilder {
             NodeList entities = subjects.getElementsByTagName("entity");
             for (int m = 0; m < entities.getLength(); m++) {
                 String entity = entities.item(m).getTextContent();
+                model.addsubject(entity);
                 movement.addSubject(entity);
             }
 
@@ -180,7 +182,9 @@ public class GameBuilder {
         location.addDestination(fromName);
     }
 
-
+    public GameModel getModel(){
+        return model;
+    }
 }
 
 

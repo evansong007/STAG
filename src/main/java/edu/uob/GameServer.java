@@ -1,5 +1,6 @@
 package edu.uob;
 
+import com.alexmerz.graphviz.ParseException;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -17,6 +18,7 @@ import java.nio.file.Paths;
 public final class GameServer {
 
     private static final char END_OF_TRANSMISSION = 4;
+    private GameModel model;
 
     public static void main(String[] args) throws IOException {
         File entitiesFile = Paths.get("config" + File.separator + "basic-entities.dot").toAbsolutePath().toFile();
@@ -40,8 +42,10 @@ public final class GameServer {
         try {
             GameBuilder builder = new GameBuilder(entitiesFile,actionsFile);
             builder.importActions();
+            builder.importEntities();
+            model = builder.getModel();
 
-        } catch (ParserConfigurationException | IOException | SAXException e) {
+        } catch (ParserConfigurationException | IOException | SAXException | ParseException e) {
             throw new RuntimeException(e);
         }
     }

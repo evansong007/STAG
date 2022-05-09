@@ -5,20 +5,23 @@ import edu.uob.entity.Player;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 public class GameModel {
     private HashMap<String, HashSet<GameAction>> actionMap;
     private HashMap<String, Location> locationsMap;
 
-    private HashSet<String> triggerList;
+    private Set<String> triggerList;
 
-    private HashSet<String> actionList;
+    private Set<String> subjectList;
 
     public HashSet<Player> players;
 
     public GameModel(){
         this.actionMap = new HashMap<>();
         this.locationsMap = new HashMap<>();
+        this.players = new HashSet<>();
+        this.subjectList = new HashSet<>();
     }
 
     public void addAction(GameAction action){
@@ -43,5 +46,13 @@ public class GameModel {
 
     public void addPlayer(Player player){
         players.add(player);
+    }
+
+    public void setTrigger(){
+        triggerList = actionMap.keySet();
+    }
+
+    public void addsubject(String subject){
+        subjectList.add(subject);
     }
 }

@@ -8,7 +8,10 @@ public class GameTokenizer {
     private String command;
     private String playerName;
 
-    private ArrayList<String> tokens;
+    private ArrayList<String> actions;
+
+    private ArrayList<String> subjects;
+
 
     public GameTokenizer(String command) {
         this.playerName = command.split(":",2)[0];
@@ -23,6 +26,9 @@ public class GameTokenizer {
     public void setTokens(){
         String optimizer = command.toLowerCase().trim();
         String[] words = optimizer.split(" ");
+        for (String word:words) {
+
+        }
 
 
     }
