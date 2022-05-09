@@ -39,5 +39,4 @@ final class ActionsFileTests {
           fail("IOException was thrown when attempting to read basic actions file");
       }
   }
-
 }
