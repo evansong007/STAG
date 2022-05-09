@@ -58,6 +58,8 @@ public final class GameServer {
     */
     public String handleCommand(String command) {
         // TODO implement your server logic here
+        GameContorller contorller = new GameContorller(model,command);
+
         return "Thanks for your message: " + command;
     }
 

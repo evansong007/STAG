@@ -26,11 +26,12 @@ public class ReadFileTests {
     }
 
     @Test
-    void extendedActionTest() throws ParserConfigurationException, IOException, SAXException {
+    void extendedActionTest() throws ParserConfigurationException, IOException, SAXException, ParseException {
         File extendedEntitiesFile = Paths.get("config/extended-entities.dot").toAbsolutePath().toFile();
         File extendedActionsFile = Paths.get("config/extended-actions.xml").toAbsolutePath().toFile();
         extendedBuilder = new GameBuilder(extendedEntitiesFile,extendedActionsFile);
         extendedBuilder.importActions();
+        extendedBuilder.importEntities();
         System.out.println("hello\n");
     }
 }
