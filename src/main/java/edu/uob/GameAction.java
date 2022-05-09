@@ -12,9 +12,13 @@ public class GameAction
     private String narration;
 
 
-    public GameAction(String trigger){
-        this.trigger = trigger;
+    public GameAction(){
+        subjects = new ArrayList<>();
+        consumed = new ArrayList<>();
+        produced = new ArrayList<>();
     }
+
+    public void setTrigger(String trigger){this.trigger = trigger;}
 
     public void addSubject(String item){
         subjects.add(item);
