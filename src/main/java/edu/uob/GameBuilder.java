@@ -58,7 +58,6 @@ public class GameBuilder {
             makeAction(action,model);
         }
 
-        model.setTrigger();
     }
 
     public static class MyFilter implements NodeFilter {
@@ -84,6 +83,7 @@ public class GameBuilder {
             String keyword = keywords.item(i).getTextContent();
             GameAction movement = new GameAction();
             movement.setTrigger(keyword);
+            model.addTrigger(keyword);
 
             //add subject to action
             Element subjects = (Element) action.getElementsByTagName("subjects").item(0);
@@ -131,6 +131,7 @@ public class GameBuilder {
             com.alexmerz.graphviz.objects.Node locationDetails = location.getNodes(false).get(0);
             // read name and description of location
             String locationName = locationDetails.getId().getId();
+            model.addsubject(locationName);
             String description = locationDetails.getAttribute("description");
             Location locationMap = new Location(locationName, description);
             model.addLocation(locationMap);

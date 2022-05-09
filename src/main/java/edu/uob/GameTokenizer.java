@@ -3,14 +3,15 @@ package edu.uob;
 import edu.uob.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class GameTokenizer {
-    private String command;
+    private String[] command;
     private String playerName;
 
     public GameTokenizer(String command) {
         this.playerName = command.split(":",2)[0];
-        this.command = command.split(":",2)[1];
+        this.command = command.split(":",2)[1].toLowerCase().trim().split(" ");
     }
 
 
@@ -18,14 +19,24 @@ public class GameTokenizer {
         return new Player(playerName,"A student of Bristol");
     }
 
-    public ArrayList<String> getTokens(){
-        ArrayList<String> tokens = new ArrayList<>();
-        String optimizer = command.toLowerCase().trim();
-        String[] words = optimizer.split(" ");
-        for (String word:words) {
-            tokens.add(word);
+
+    public ArrayList<String> getActions(Set<String> triggers){
+        ArrayList<String> actions = new ArrayList<>();
+        for (String word:command) {
+            if(triggers.contains(word)){
+                actions.add(word);
+            }
         }
-        return tokens;
+        return actions;
     }
 
+    public ArrayList<String> getSubjects(Set<String> subjects){
+        ArrayList<String> entities = new ArrayList<>();
+        for (String word:command) {
+            if(subjects.contains(word)){
+                entities.add(word);
+            }
+        }
+        return entities;
+    }
 }

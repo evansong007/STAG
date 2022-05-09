@@ -29,9 +29,6 @@ public class Location extends GameEntity{
         destinations.add(nameOfLocation);
     }
 
-    public void dropEntity(String nameOfEntity){
-        entityList.remove(nameOfEntity);
-    }
 
 
 }
