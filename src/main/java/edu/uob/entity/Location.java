@@ -19,6 +19,36 @@ public class Location extends GameEntity{
         this.destinations = new HashSet<>();
     }
 
+    @Override
+    public void interactWithEntity(GameEntity entity) {
+
+    }
+
+    @Override
+    public void interactWithArtefact(GameEntity entity) {
+
+    }
+
+    @Override
+    public void interactWithCharacter(GameEntity entity) {
+
+    }
+
+    @Override
+    public void interactWithFurniture(GameEntity entity) {
+
+    }
+
+    @Override
+    public void interactWithLocation(GameEntity entity) {
+
+    }
+
+    @Override
+    public void interactWithPlayer(GameEntity entity) {
+
+    }
+
     public void addEntity(GameEntity entity){
         if(!entityList.containsKey(entity.name)){
             entityList.put(entity.name,entity);
