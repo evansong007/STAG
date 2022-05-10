@@ -33,5 +33,6 @@ public class ReadFileTests {
         extendedBuilder.importActions();
         extendedBuilder.importEntities();
         System.out.println("hello\n");
+        System.out.println("hello\n");
     }
 }

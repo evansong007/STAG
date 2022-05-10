@@ -10,11 +10,12 @@ public class Player extends GameEntity {
     public Player(String name, String description) {
         super(name, description);
         this.health = 3;
+        this.inventory = new HashMap<>();
     }
 
     @Override
     public void interactWithEntity(GameEntity entity) {
-        entity.interactWithEntity(this);
+        entity.interactWithPlayer(this);
     }
 
     @Override
@@ -42,5 +43,7 @@ public class Player extends GameEntity {
 
     }
 
-
+    public HashMap<String, GameEntity> getInventory() {
+        return inventory;
+    }
 }

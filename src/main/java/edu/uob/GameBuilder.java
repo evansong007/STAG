@@ -123,6 +123,9 @@ public class GameBuilder {
         Graph wholeDocument = parser.getGraphs().get(0);
         ArrayList<Graph> sections = wholeDocument.getSubgraphs();
         ArrayList<Graph> locations = sections.get(0).getSubgraphs();
+        Graph firstLocation = locations.get(0);
+        String Name = firstLocation.getNodes(false).get(0).getId().getId();
+        model.setStartLocation(Name);
 
         //read loaction form .dot
         for (Graph location : locations) {

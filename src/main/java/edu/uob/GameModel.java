@@ -11,6 +11,8 @@ public class GameModel {
     private HashMap<String, HashSet<GameAction>> actionMap;
     private HashMap<String, Location> locationsMap;
     private HashMap<String,Player> players;
+
+    private String startLocation;
     private Set<String> triggerList;
     private Set<String> subjectList;
     private String currentPlayer;
@@ -27,6 +29,7 @@ public class GameModel {
         triggerList.add("drop");
         triggerList.add("goto");
         triggerList.add("look");
+        triggerList.add("health");
     }
 
     public void addAction(GameAction action){
@@ -75,5 +78,17 @@ public class GameModel {
 
     public Set<String> getSubjectList(){
         return subjectList;
+    }
+
+    public HashSet<GameAction> getAction(String trigger){
+        return actionMap.get(trigger);
+    }
+
+    public void setStartLocation(String location){
+        this.startLocation = location;
+    }
+
+    public Player getPlayer(String player){
+        return players.get(player);
     }
 }

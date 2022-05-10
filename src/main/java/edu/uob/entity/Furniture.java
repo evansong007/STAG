@@ -7,7 +7,7 @@ public class Furniture extends GameEntity{
 
     @Override
     public void interactWithEntity(GameEntity entity) {
-        entity.interactWithEntity(this);
+        entity.interactWithFurniture(this);
     }
 
     @Override

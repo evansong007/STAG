@@ -1,5 +1,6 @@
 package edu.uob;
 
+import edu.uob.GameException.GameException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.File;
@@ -26,8 +27,9 @@ final class BasicCommandTests {
 
   // Test to spawn a new server and send a simple "look" command
   @Test
-  void testLookingAroundStartLocation() {
-    String response = server.handleCommand("player 1: goto forest").toLowerCase();
+  void testLookingAroundStartLocation() throws GameException.CommandException {
+    String response = server.handleCommand("player 1: inventory").toLowerCase();
+    System.out.println(response);
     assertTrue(response.contains("empty room"), "Did not see description of room in response to look");
     assertTrue(response.contains("magic potion"), "Did not see description of artifacts in response to look");
     assertTrue(response.contains("wooden trapdoor"), "Did not see description of furniture in response to look");

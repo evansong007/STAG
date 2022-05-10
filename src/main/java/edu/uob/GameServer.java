@@ -1,6 +1,7 @@
 package edu.uob;
 
 import com.alexmerz.graphviz.ParseException;
+import edu.uob.GameException.GameException;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -56,11 +57,10 @@ public final class GameServer {
     *
     * <p>This method handles all incoming game commands and carries out the corresponding actions.
     */
-    public String handleCommand(String command) {
+    public String handleCommand(String command) throws GameException.CommandException {
         // TODO implement your server logic here
         GameContorller contorller = new GameContorller(model,command);
-
-        return "Thanks for your message: " + command;
+        return contorller.executeCommand();
     }
 
     //  === Methods below are there to facilitate server related operations. ===
@@ -111,6 +111,8 @@ public final class GameServer {
                 writer.flush();
 
             }
+        } catch (GameException.CommandException e) {
+            throw new RuntimeException(e);
         }
     }
 }

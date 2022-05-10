@@ -21,7 +21,7 @@ public class Location extends GameEntity{
 
     @Override
     public void interactWithEntity(GameEntity entity) {
-        entity.interactWithEntity(this);
+        entity.interactWithLocation(this);
     }
 
     @Override
