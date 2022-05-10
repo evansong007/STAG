@@ -21,38 +21,31 @@ public class Location extends GameEntity{
 
     @Override
     public void interactWithEntity(GameEntity entity) {
-
+        entity.interactWithEntity(this);
     }
 
     @Override
     public void interactWithArtefact(GameEntity entity) {
-
+        entityList.put(entity.name,entity);
     }
 
     @Override
     public void interactWithCharacter(GameEntity entity) {
-
+        entityList.put(entity.name,entity);
     }
 
     @Override
     public void interactWithFurniture(GameEntity entity) {
-
+        entityList.put(entity.name,entity);
     }
 
     @Override
     public void interactWithLocation(GameEntity entity) {
-
     }
 
     @Override
     public void interactWithPlayer(GameEntity entity) {
-
-    }
-
-    public void addEntity(GameEntity entity){
-        if(!entityList.containsKey(entity.name)){
-            entityList.put(entity.name,entity);
-        }
+        entityList.put(entity.name,entity);
     }
 
     public void addDestination(String nameOfLocation){

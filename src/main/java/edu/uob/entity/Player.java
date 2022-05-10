@@ -14,7 +14,7 @@ public class Player extends GameEntity {
 
     @Override
     public void interactWithEntity(GameEntity entity) {
-
+        entity.interactWithEntity(this);
     }
 
     @Override

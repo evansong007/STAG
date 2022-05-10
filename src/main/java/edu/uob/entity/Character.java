@@ -7,7 +7,7 @@ public class Character extends GameEntity{
 
     @Override
     public void interactWithEntity(GameEntity entity) {
-
+        entity.interactWithEntity(this);
     }
 
     @Override

@@ -4,10 +4,8 @@ import com.alexmerz.graphviz.ParseException;
 import com.alexmerz.graphviz.Parser;
 import com.alexmerz.graphviz.objects.Edge;
 import com.alexmerz.graphviz.objects.Graph;
-import edu.uob.entity.Artefact;
+import edu.uob.entity.*;
 import edu.uob.entity.Character;
-import edu.uob.entity.Furniture;
-import edu.uob.entity.Location;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -160,13 +158,16 @@ public class GameBuilder {
             String description = node.getAttribute("description");
             switch (TypeOfEntity){
                 case "artefacts":
-                    location.addEntity(new Artefact(entityName,description));
+                    GameEntity item1 = new Artefact(entityName,description);
+                    item1.interactWithEntity(location);
                     break;
                 case "furniture":
-                    location.addEntity(new Furniture(entityName,description));
+                    GameEntity item2 = new Furniture(entityName,description);
+                    item2.interactWithEntity(location);
                     break;
                 case "characters":
-                    location.addEntity(new Character(entityName,description));
+                    GameEntity item3 = new Character(entityName,description);
+                    item3.interactWithEntity(location);
                     break;
             }
         }
