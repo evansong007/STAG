@@ -11,5 +11,35 @@ public class Player extends GameEntity {
         super(name, description);
     }
 
+    @Override
+    public void addEntity(GameEntity entity) {
+        entity.addPlayer(this);
+    }
+
+    @Override
+    public void addCharacter(GameEntity entity) {
+
+    }
+
+    @Override
+    public void addFurniture(GameEntity entity) {
+
+    }
+
+    @Override
+    public void addLocation(GameEntity entity) {
+
+    }
+
+    @Override
+    public void addPlayer(GameEntity entity) {
+
+    }
+
+    @Override
+    public void addArtefact(GameEntity entity) {
+
+    }
+
 
 }

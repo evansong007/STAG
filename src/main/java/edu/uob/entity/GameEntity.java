@@ -20,4 +20,16 @@ public abstract class GameEntity
     {
         return description;
     }
+
+    public abstract void addEntity(GameEntity entity);
+
+    public abstract void addCharacter(GameEntity entity);
+
+    public abstract void addFurniture(GameEntity entity);
+
+    public abstract void addLocation(GameEntity entity);
+
+    public abstract void addPlayer(GameEntity entity);
+
+    public abstract void addArtefact(GameEntity entity);
 }
