@@ -8,44 +8,40 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class Location extends GameEntity{
-    private HashMap<String,GameEntity> entityList;
+    private HashMap<String,Artefact> artefectList;
+
+    private HashMap<String,Character> characterList;
+
+    private HashMap<String, Furniture> furnitureList;
+
+    private HashMap<String,Player> playerList;
 
     private HashSet<String> destinations;
 
 
     public Location(String name, String description) {
         super(name, description);
-        this.entityList = new HashMap<>();
+        this.artefectList = new HashMap<>();
+        this.characterList = new HashMap<>();
+        this.furnitureList = new HashMap<>();
+        this.playerList = new HashMap<>();
         this.destinations = new HashSet<>();
     }
 
-    @Override
-    public void interactWithEntity(GameEntity entity) {
-        entity.interactWithLocation(this);
+    public void addArtefact(Artefact entity) {
+        artefectList.put(entity.name, entity);
     }
 
-    @Override
-    public void interactWithArtefact(GameEntity entity) {
-        entityList.put(entity.name,entity);
+    public void addCharacter(Character entity) {
+        characterList.put(entity.name, entity);
     }
 
-    @Override
-    public void interactWithCharacter(GameEntity entity) {
-        entityList.put(entity.name,entity);
+    public void addFurniture(Furniture entity) {
+        furnitureList.put(entity.name, entity);
     }
 
-    @Override
-    public void interactWithFurniture(GameEntity entity) {
-        entityList.put(entity.name,entity);
-    }
-
-    @Override
-    public void interactWithLocation(GameEntity entity) {
-    }
-
-    @Override
-    public void interactWithPlayer(GameEntity entity) {
-        entityList.put(entity.name,entity);
+    public void addPlayer(Player entity) {
+        playerList.put(entity.name, entity);
     }
 
     public void addDestination(String nameOfLocation){
@@ -53,5 +49,32 @@ public class Location extends GameEntity{
     }
 
 
+    public HashSet<String> getDestinations(){
+        return destinations;
+    }
 
+    public String getEntities(){
+        String atrefects = artefectList.keySet().toString();
+        String characters = characterList.keySet().toString();
+        String furnitures = furnitureList.keySet().toString();
+        String players = playerList.keySet().toString();
+
+        return atrefects + characters + furnitures + players;
+    }
+
+    public HashMap<String,Artefact> getArtefectList(){
+        return artefectList;
+    }
+
+    public Artefact getArtefect(String entity){
+        return artefectList.get(entity);
+    }
+
+    public void removeArtefect(String entity){
+        artefectList.remove(entity);
+    }
+
+    public void removePlayer(String player){
+         playerList.remove(player);
+    }
 }

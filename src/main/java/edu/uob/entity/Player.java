@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class Player extends GameEntity {
 
     private Integer health ;
-    private HashMap<String,GameEntity> inventory;
+    private HashMap<String,Artefact> inventory;
     private String currentLocation;
     public Player(String name, String description) {
         super(name, description);
@@ -13,37 +13,28 @@ public class Player extends GameEntity {
         this.inventory = new HashMap<>();
     }
 
-    @Override
-    public void interactWithEntity(GameEntity entity) {
-        entity.interactWithPlayer(this);
-    }
 
-    @Override
-    public void interactWithArtefact(GameEntity entity) {
-
-    }
-
-    @Override
-    public void interactWithCharacter(GameEntity entity) {
-
-    }
-
-    @Override
-    public void interactWithFurniture(GameEntity entity) {
-
-    }
-
-    @Override
-    public void interactWithLocation(GameEntity entity) {
-
-    }
-
-    @Override
-    public void interactWithPlayer(GameEntity entity) {
-
-    }
-
-    public HashMap<String, GameEntity> getInventory() {
+    public HashMap<String, Artefact> getInventory() {
         return inventory;
+    }
+
+    public String getCurrentLocation(){
+        return currentLocation;
+    }
+
+    public void setCurrentLocation(String location){
+        this.currentLocation = location;
+    }
+
+    public Integer getHealth(){
+        return health;
+    }
+
+    public void getArtefect(Artefact entity){
+        inventory.put(entity.getName(),entity);
+    }
+
+    public Artefact dropArtefect(String entity){
+        return inventory.remove(entity);
     }
 }

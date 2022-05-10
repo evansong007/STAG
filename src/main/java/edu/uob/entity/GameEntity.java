@@ -21,17 +21,6 @@ public abstract class GameEntity
         return description;
     }
 
-    public abstract void interactWithEntity(GameEntity entity);
-
-    public abstract void interactWithArtefact(GameEntity entity);
-
-    public abstract void interactWithCharacter(GameEntity entity);
-
-    public abstract void interactWithFurniture(GameEntity entity);
-
-    public abstract void interactWithLocation(GameEntity entity);
-
-    public abstract void interactWithPlayer(GameEntity entity);
 
 
 }

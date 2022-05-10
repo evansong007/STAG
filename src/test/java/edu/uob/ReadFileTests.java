@@ -1,6 +1,7 @@
 package edu.uob;
 
 import com.alexmerz.graphviz.ParseException;
+import edu.uob.entity.Artefact;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
@@ -9,6 +10,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class ReadFileTests {
     private GameBuilder basicBuilder;
@@ -34,5 +37,15 @@ public class ReadFileTests {
         extendedBuilder.importEntities();
         System.out.println("hello\n");
         System.out.println("hello\n");
+    }
+
+    @Test
+    void avad(){
+        HashSet<Artefact> abc = new HashSet<>();
+        Artefact ooo = new Artefact("agc","ppp");
+        Artefact ppp = new Artefact("agc","ppp");
+        abc.add(ooo);
+        abc.add(ppp);
+        System.out.println(abc);
     }
 }

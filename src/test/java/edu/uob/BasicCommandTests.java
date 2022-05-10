@@ -28,8 +28,16 @@ final class BasicCommandTests {
   // Test to spawn a new server and send a simple "look" command
   @Test
   void testLookingAroundStartLocation() throws GameException.CommandException {
-    String response = server.handleCommand("player 1: inventory").toLowerCase();
-    System.out.println(response);
+    String response = server.handleCommand("player 1: look").toLowerCase();
+    String response1 = server.handleCommand("player 1: inventory").toLowerCase();
+    String response2 = server.handleCommand("player 1: inv").toLowerCase();
+    String response3 = server.handleCommand("player 1: health").toLowerCase();
+
+    System.out.println(response+"\n");
+    System.out.println(response1+"\n");
+    System.out.println(response2+"\n");
+    System.out.println(response3+"\n");
+
     assertTrue(response.contains("empty room"), "Did not see description of room in response to look");
     assertTrue(response.contains("magic potion"), "Did not see description of artifacts in response to look");
     assertTrue(response.contains("wooden trapdoor"), "Did not see description of furniture in response to look");

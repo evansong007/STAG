@@ -1,7 +1,5 @@
 package edu.uob;
 
-import edu.uob.entity.Player;
-
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -13,12 +11,6 @@ public class GameTokenizer {
         this.playerName = command.split(":",2)[0];
         this.command = command.split(":",2)[1].toLowerCase().trim().split(" ");
     }
-
-
-    public Player getPlayer(){
-        return new Player(playerName,"A student of Bristol");
-    }
-
 
     public ArrayList<String> getActions(Set<String> triggers){
         ArrayList<String> actions = new ArrayList<>();
@@ -38,5 +30,9 @@ public class GameTokenizer {
             }
         }
         return entities;
+    }
+
+    public String getPlayerName(){
+        return playerName;
     }
 }

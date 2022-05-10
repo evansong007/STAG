@@ -37,4 +37,8 @@ public class GameAction
     public String getTrigger(){
         return this.trigger;
     }
+
+    public ArrayList<String> getSubject(){
+        return subjects;
+    }
 }

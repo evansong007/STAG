@@ -7,7 +7,7 @@
         </triggers>
         <subjects>
             <entity>trapdoor</entity>
-            <entity>key</entity>
+         c   <entity>key</entity>
         </subjects>
         <consumed>
             <entity>key</entity>

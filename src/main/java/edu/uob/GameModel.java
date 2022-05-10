@@ -11,11 +11,9 @@ public class GameModel {
     private HashMap<String, HashSet<GameAction>> actionMap;
     private HashMap<String, Location> locationsMap;
     private HashMap<String,Player> players;
-
     private String startLocation;
     private Set<String> triggerList;
     private Set<String> subjectList;
-    private String currentPlayer;
 
     public GameModel(){
         this.actionMap = new HashMap<>();
@@ -64,14 +62,6 @@ public class GameModel {
         subjectList.add(subject);
     }
 
-    public void setCurrentPlayer(String currentPlayer){
-        this.currentPlayer = currentPlayer;
-    }
-
-    public String getCurrentPlayer(){
-        return currentPlayer;
-    }
-
     public Set<String> getTriggerList(){
         return triggerList;
     }
@@ -91,4 +81,23 @@ public class GameModel {
     public Player getPlayer(String player){
         return players.get(player);
     }
+
+    public HashMap<String,Location> getLocationMap(){
+        return locationsMap;
+    }
+
+    public Location getLocation(String location){
+        return locationsMap.get(location);
+    }
+
+    public String getStartLocation(){
+        return startLocation;
+    }
+
+    public HashMap<String,Player> getPlayers(){return players;}
+
+    public Location getStroeroom(){
+        return locationsMap.get("stroeroom");
+    }
+
 }
