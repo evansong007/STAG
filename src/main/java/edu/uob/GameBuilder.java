@@ -161,13 +161,13 @@ public class GameBuilder {
             String description = node.getAttribute("description");
             switch (TypeOfEntity){
                 case "artefacts":
-                    location.addArtefact(new Artefact(entityName,description));
+                    location.addEntity(new Artefact(entityName,description));
                     break;
                 case "furniture":
-                    location.addFurniture(new Furniture(entityName,description));
+                    location.addEntity(new Furniture(entityName,description));
                     break;
                 case "characters":
-                    location.addCharacter(new Character(entityName,description));
+                    location.addEntity(new Character(entityName,description));
                     break;
             }
         }

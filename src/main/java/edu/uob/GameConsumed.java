@@ -1,8 +1,7 @@
 package edu.uob;
 
 import edu.uob.entity.*;
-
-import java.lang.Character;
+import edu.uob.entity.Character;
 
 public class GameConsumed extends GameVistor{
 
@@ -12,31 +11,47 @@ public class GameConsumed extends GameVistor{
 
     @Override
     public void interactWithEntity(GameEntity gameEntity) {
-
+        gameEntity.accept(this);
     }
 
     @Override
-    public void interactWithArtefact(Artefact artefact) {
-
+    public void interactWithEntity(Artefact artefact) {
+        Player player = model.getPlayer(currentPlayer);
+        Location currentLocation = model.getLocation(player.getCurrentLocation());
+        Location storeroom = model.getStroeroom();
+        player.dropArtefect(artefact.getName());
+        currentLocation.removeEntity(artefact.getName());
+        storeroom.addEntity(artefact);
     }
 
     @Override
-    public void interactWithCharacter(Character character) {
-
+    public void interactWithEntity(Character character) {
+        Player player = model.getPlayer(currentPlayer);
+        Location currentLocation = model.getLocation(player.getCurrentLocation());
+        Location storeroom = model.getStroeroom();
+        currentLocation.removeEntity(currentPlayer);
+        storeroom.addEntity(character);
     }
 
     @Override
-    public void interactWithFurniture(Furniture furniture) {
-
+    public void interactWithEntity(Furniture furniture) {
+        Player player = model.getPlayer(currentPlayer);
+        Location currentLocation = model.getLocation(player.getCurrentLocation());
+        Location storeroom = model.getStroeroom();
+        currentLocation.removeEntity(furniture.getName());
+        storeroom.addEntity(furniture);
     }
 
     @Override
-    public void interactWithLocation(Location location) {
-
+    public void interactWithEntity(Location location) {
+        Player player = model.getPlayer(currentPlayer);
+        Location currentLocation = model.getLocation(player.getCurrentLocation());
+        currentLocation.getDestinations().remove(location.getName());
     }
 
     @Override
-    public void interactWithPlayer(Player player) {
-
+    public void interactWithEntity(Player player) {
+        player.descreaseHealth();
     }
+
 }

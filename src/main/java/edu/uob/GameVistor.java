@@ -1,9 +1,7 @@
 package edu.uob;
 
 import edu.uob.entity.*;
-
-import java.lang.Character;
-import java.util.ArrayList;
+import edu.uob.entity.Character;
 
 public abstract class GameVistor {
     GameModel model;
@@ -21,14 +19,23 @@ public abstract class GameVistor {
 
     public abstract void interactWithEntity(GameEntity gameEntity);
 
-    public abstract void interactWithArtefact(Artefact artefact);
+    public abstract void interactWithEntity(Artefact artefact);
 
-    public abstract void interactWithCharacter(Character character);
+    public abstract void interactWithEntity(Character character);
 
-    public abstract void interactWithFurniture(Furniture furniture);
+    public abstract void interactWithEntity(Furniture furniture);
 
-    public abstract void interactWithLocation(Location location);
+    public abstract void interactWithEntity(Location location);
 
-    public abstract void interactWithPlayer(Player player);
+    public abstract void interactWithEntity(Player player);
+
+    public String getCurrentPlayer(){
+        return currentPlayer;
+    };
+
+    public GameAction getAction(){
+        return action;
+    }
+
 
 }

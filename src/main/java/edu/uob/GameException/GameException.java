@@ -12,5 +12,10 @@ public class GameException extends Exception {
         }
     }
 
+    public static class ExecuteException extends GameException{
 
+        public ExecuteException(String message) {
+            super(message);
+        }
+    }
 }

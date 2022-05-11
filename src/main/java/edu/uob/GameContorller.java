@@ -4,6 +4,7 @@ import edu.uob.GameException.GameException;
 import edu.uob.entity.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 
@@ -18,7 +19,7 @@ public class GameContorller {
     private GameAction action;
 
 
-    public GameContorller(GameModel model,String command){
+    public GameContorller(GameModel model, String command) {
         this.model = model;
         GameTokenizer tokenizer = new GameTokenizer(command);
         this.player = tokenizer.getPlayerName();
@@ -28,14 +29,14 @@ public class GameContorller {
 
     }
 
-    public String executeCommand() throws GameException.CommandException {
+    public String executeCommand() throws GameException.CommandException, GameException.ExecuteException {
         checkPlayer();
-        if(actionsOfCommand.isEmpty()){
+        if (actionsOfCommand.isEmpty()) {
             throw new GameException.CommandException("No valid action in command");
         }
         Player currentPlayer = model.getPlayer(player);
         String trigger = actionsOfCommand.get(0);
-        switch (trigger){
+        switch (trigger) {
             case "inventory":
             case "inv":
                 return executeInventory(currentPlayer);
@@ -50,39 +51,40 @@ public class GameContorller {
             case "goto":
                 return executeGoto(currentPlayer);
             default:
-                checkAction(currentPlayer,trigger);
-                return "hah";
+                checkAction(currentPlayer, trigger);
+
+                return executeAction(action);
 
         }
     }
 
-    public void checkPlayer(){
-        if(!model.getPlayers().containsKey(this.player)){
-            Player player = new Player(this.player,"A student of Bristol");
+    public void checkPlayer() {
+        if (!model.getPlayers().containsKey(this.player)) {
+            Player player = new Player(this.player, "A student of Bristol");
             player.setCurrentLocation(model.getStartLocation());
             model.addPlayer(player);
         }
     }
 
-    public String executeInventory(Player currentPlayer){
+    public String executeInventory(Player currentPlayer) {
         String result = "Your inventory have these :";
-        if(currentPlayer.getInventory().isEmpty()){
+        if (currentPlayer.getInventory().isEmpty()) {
             return "Your inventory is empty";
-        }else {
+        } else {
             return result + currentPlayer.getInventory().keySet();
         }
     }
 
-    public String executeLook(Player currentPlayer){
+    public String executeLook(Player currentPlayer) {
         String result = "Your are in : ";
 
         Location currentLocation = model.getLocation(currentPlayer.getCurrentLocation());
         String entities = currentLocation.getEntities();
         String path = currentLocation.getDestinations().toString();
-        return result + currentLocation.getName()+"\nYou can see : "+entities +"\nYou can go : "+path;
+        return result + currentLocation.getName() + "\nYou can see : " + entities + "\nYou can go : " + path;
     }
 
-    public String executeHealth(Player currentPlayer){
+    public String executeHealth(Player currentPlayer) {
         String result = "Your health status is : ";
         return result + currentPlayer.getHealth();
     }
@@ -92,19 +94,19 @@ public class GameContorller {
         Location currentLocation = model.getLocation(currentPlayer.getCurrentLocation());
         int numberOfCanBeGet = 0;
         String target = "";
-        for (String subject: subjectOfCommand) {
-            if(currentLocation.getArtefectList().containsKey(subject)){
+        for (String subject : subjectOfCommand) {
+            if (currentLocation.getEntitylist().containsKey(subject)) {
                 numberOfCanBeGet += 1;
                 target = subject;
             }
         }
-        if(numberOfCanBeGet == 0){
+        if (numberOfCanBeGet == 0) {
             throw new GameException.CommandException("No Valid entity can obtain");
-        }else if(numberOfCanBeGet == 1){
-            Artefact entity = currentLocation.getArtefect(target);
-            currentLocation.removeArtefect(entity.getName());
-            currentPlayer.getArtefect(entity);
-        }else {
+        } else if (numberOfCanBeGet == 1) {
+            GameEntity entity = currentLocation.getEntity(target);
+            currentLocation.removeEntity(entity.getName());
+            currentPlayer.getArtefect((Artefact) entity);
+        } else {
             throw new GameException.CommandException("Ambiguous Command");
         }
 
@@ -116,19 +118,19 @@ public class GameContorller {
         Location currentLocation = model.getLocation(currentPlayer.getCurrentLocation());
         int numberOfCanBeGet = 0;
         String target = "";
-        for (String subject: subjectOfCommand) {
-            if(currentPlayer.getInventory().containsKey(subject)){
+        for (String subject : subjectOfCommand) {
+            if (currentPlayer.getInventory().containsKey(subject)) {
                 numberOfCanBeGet += 1;
                 target = subject;
             }
         }
-        if(numberOfCanBeGet == 0){
+        if (numberOfCanBeGet == 0) {
             throw new GameException.CommandException("No Valid entity can drop");
-        }else if(numberOfCanBeGet == 1){
+        } else if (numberOfCanBeGet == 1) {
             Artefact entity = currentPlayer.dropArtefect(target);
-            currentLocation.addArtefact(entity);
+            currentLocation.addEntity(entity);
 
-        }else {
+        } else {
             throw new GameException.CommandException("Ambiguous Command");
         }
 
@@ -140,78 +142,76 @@ public class GameContorller {
         Location currentLocation = model.getLocation(currentPlayer.getCurrentLocation());
         int numberOfCanBeGet = 0;
         String target = "";
-        for (String subject: subjectOfCommand) {
-            if(currentLocation.getDestinations().contains(subject)){
+        for (String subject : subjectOfCommand) {
+            if (currentLocation.getDestinations().contains(subject)) {
                 numberOfCanBeGet += 1;
                 target = subject;
             }
         }
-        if(numberOfCanBeGet == 0){
+        if (numberOfCanBeGet == 0) {
             throw new GameException.CommandException("No Valid entity can obtain");
-        }else if(numberOfCanBeGet == 1){
-            currentLocation.removePlayer(currentPlayer.getName());
+        } else if (numberOfCanBeGet == 1) {
+            currentLocation.removeEntity(currentPlayer.getName());
             currentPlayer.setCurrentLocation(target);
             model.getLocation(target).addPlayer(currentPlayer);
-        }else {
+        } else {
             throw new GameException.CommandException("Ambiguous Command");
         }
 
         return result + target;
     }
 
-    public void checkAction(Player currentPlayer,String trigger) throws GameException.CommandException {
+    public void checkAction(Player currentPlayer, String trigger) throws GameException.CommandException {
 
         //match trigger and command
         ArrayList<GameAction> potentialActions = getPotentialAction(trigger);
 
         Location currentLocation = model.getLocation(currentPlayer.getCurrentLocation());
         ArrayList<GameAction> validAction = new ArrayList<>();
-        for (GameAction action: potentialActions) {
+        for (GameAction action : potentialActions) {
             Boolean valid = true;
-            for(String subject:action.getSubject()){
-                if(!checkInventory(subject,currentPlayer)&&!checkCurrentLocation(subject,currentLocation)){
+            for (String subject : action.getSubject()) {
+                if (!checkInventory(subject, currentPlayer) && !checkCurrentLocation(subject, currentLocation)) {
                     valid = false;
                 }
             }
-            if(valid){
+            if (valid) {
                 validAction.add(action);
             }
         }
 
-        if(validAction.size() == 0){
+        if (validAction.size() == 0) {
             throw new GameException.CommandException("No valid subject in command");
-        }else if(validAction.size() > 1){
+        } else if (validAction.size() > 1) {
             throw new GameException.CommandException("Ambiguous Command");
         }
 
         this.action = validAction.get(0);
     }
 
-    public Boolean checkInventory(String subject,Player currentPlayer){
-        if(currentPlayer.getInventory().containsKey(subject)){
+    public Boolean checkInventory(String subject, Player currentPlayer) {
+        if (currentPlayer.getInventory().containsKey(subject)) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
 
-    public Boolean checkCurrentLocation(String subject,Location currenLocation){
-        if(currenLocation.getCharacterList().containsKey(subject)||
-        currenLocation.getFurnitureList().containsKey(subject)||
-                currenLocation.getArtefectList().containsKey(subject)){
+    public Boolean checkCurrentLocation(String subject, Location currenLocation) {
+        if (currenLocation.getEntitylist().containsKey(subject)) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
 
-    public ArrayList<GameAction> getPotentialAction(String trigger){
+    public ArrayList<GameAction> getPotentialAction(String trigger) {
         //match trigger and command
         HashSet<GameAction> actions = model.getAction(trigger);
         ArrayList<GameAction> potentialActions = new ArrayList<>();
-        for (GameAction action: actions) {
-            for (String subject: subjectOfCommand) {
-                if(action.getSubject().contains(subject)){
+        for (GameAction action : actions) {
+            for (String subject : subjectOfCommand) {
+                if (action.getSubject().contains(subject)) {
                     potentialActions.add(action);
                     break;
                 }
@@ -221,9 +221,36 @@ public class GameContorller {
         return potentialActions;
     }
 
-    public String executeAction(GameAction action){
+    public String executeAction(GameAction action) throws GameException.ExecuteException {
+        GameConsumed consumed = new GameConsumed(model, player, action);
+        GameProduced produced = new GameProduced(model, player, action);
+        ArrayList<String> consumedEntity = action.getConsumed();
+        ArrayList<String> producedEntity = action.getProduced();
+        Player player = model.getPlayer(this.player);
+        for (String entity : consumedEntity) {
+            if (entity.equals("health")) {
+                consumed.interactWithEntity(player);
+            } else {
+                for (Location location:model.getLocationsMap().values()) {
+                    if(location.getEntitylist().containsKey(entity)){
+                        consumed.interactWithEntity(location.getEntity(entity));
+                    }
+                }
+            }
+        }
 
-
-        return "asd";
+        for (String entity: producedEntity) {
+            if (entity.equals("health")) {
+                produced.interactWithEntity(player);
+            } else {
+                for (Location location:model.getLocationsMap().values()) {
+                    if(location.getEntitylist().containsKey(entity)){
+                        produced.interactWithEntity(location.getEntity(entity));
+                    }
+                }
+            }
+        }
+        return action.getNarration();
     }
+
 }

@@ -17,7 +17,7 @@ public class Player extends GameEntity {
 
     @Override
     public void accept(GameVistor vistor) {
-
+        vistor.interactWithEntity(this);
     }
 
 
@@ -43,5 +43,13 @@ public class Player extends GameEntity {
 
     public Artefact dropArtefect(String entity){
         return inventory.remove(entity);
+    }
+
+    public void descreaseHealth(){
+        health -= 1;
+    }
+
+    public void increaseHealth(){
+        health += 1;
     }
 }

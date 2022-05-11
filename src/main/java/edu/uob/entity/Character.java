@@ -9,7 +9,7 @@ public class Character extends GameEntity{
 
     @Override
     public void accept(GameVistor vistor) {
-
+        vistor.interactWithEntity(this);
     }
 
 

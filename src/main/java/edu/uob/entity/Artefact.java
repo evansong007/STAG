@@ -9,7 +9,7 @@ public class Artefact extends GameEntity {
 
     @Override
     public void accept(GameVistor vistor) {
-
+        vistor.interactWithEntity(this);
     }
 
 }

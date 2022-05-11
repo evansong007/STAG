@@ -57,7 +57,7 @@ public final class GameServer {
     *
     * <p>This method handles all incoming game commands and carries out the corresponding actions.
     */
-    public String handleCommand(String command) throws GameException.CommandException {
+    public String handleCommand(String command) throws GameException.CommandException, GameException.ExecuteException {
         // TODO implement your server logic here
         GameContorller contorller = new GameContorller(model,command);
         return contorller.executeCommand();
@@ -111,7 +111,7 @@ public final class GameServer {
                 writer.flush();
 
             }
-        } catch (GameException.CommandException e) {
+        } catch (GameException.CommandException | GameException.ExecuteException e) {
             throw new RuntimeException(e);
         }
     }

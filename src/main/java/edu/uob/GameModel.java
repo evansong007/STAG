@@ -1,8 +1,10 @@
 package edu.uob;
 
+import edu.uob.entity.GameEntity;
 import edu.uob.entity.Location;
 import edu.uob.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -80,10 +82,6 @@ public class GameModel {
 
     public Player getPlayer(String player){
         return players.get(player);
-    }
-
-    public HashMap<String,Location> getLocationMap(){
-        return locationsMap;
     }
 
     public Location getLocation(String location){
