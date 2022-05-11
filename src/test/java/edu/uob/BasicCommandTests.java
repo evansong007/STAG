@@ -27,9 +27,9 @@ final class BasicCommandTests {
 
   // Test to spawn a new server and send a simple "look" command
   @Test
-  void testLookingAroundStartLocation() throws GameException.CommandException, GameException.ExecuteException {
+  void testLookingAroundStartLocation() throws GameException {
     String response = server.handleCommand("player 1: look").toLowerCase();
-    String response1 = server.handleCommand("player 1: inventory").toLowerCase();
+    String response1 = server.handleCommand("player 1: goto cellar").toLowerCase();
     String response2 = server.handleCommand("player 1: inv").toLowerCase();
     String response3 = server.handleCommand("player 1: health").toLowerCase();
 

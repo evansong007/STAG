@@ -52,4 +52,8 @@ public class Player extends GameEntity {
     public void increaseHealth(){
         health += 1;
     }
+
+    public void resethealth(){
+        health = 3;
+    }
 }

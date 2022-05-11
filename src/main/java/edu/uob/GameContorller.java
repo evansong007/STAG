@@ -29,7 +29,7 @@ public class GameContorller {
 
     }
 
-    public String executeCommand() throws GameException.CommandException, GameException.ExecuteException {
+    public String executeCommand() throws GameException {
         checkPlayer();
         if (actionsOfCommand.isEmpty()) {
             throw new GameException.CommandException("No valid action in command");
@@ -137,7 +137,7 @@ public class GameContorller {
         return result + target;
     }
 
-    public String executeGoto(Player currentPlayer) throws GameException.CommandException {
+    public String executeGoto(Player currentPlayer) throws GameException {
         String result = "You have move to  : ";
         Location currentLocation = model.getLocation(currentPlayer.getCurrentLocation());
         int numberOfCanBeGet = 0;
@@ -149,7 +149,7 @@ public class GameContorller {
             }
         }
         if (numberOfCanBeGet == 0) {
-            throw new GameException.CommandException("No Valid entity can obtain");
+            throw new GameException.CommandException("No Valid destinations can go");
         } else if (numberOfCanBeGet == 1) {
             currentLocation.removeEntity(currentPlayer.getName());
             currentPlayer.setCurrentLocation(target);
@@ -221,15 +221,26 @@ public class GameContorller {
         return potentialActions;
     }
 
-    public String executeAction(GameAction action) throws GameException.ExecuteException {
+    public String executeAction(GameAction action) {
         GameConsumed consumed = new GameConsumed(model, player, action);
         GameProduced produced = new GameProduced(model, player, action);
         ArrayList<String> consumedEntity = action.getConsumed();
         ArrayList<String> producedEntity = action.getProduced();
         Player player = model.getPlayer(this.player);
+        Location currentLocation = model.getLocation(player.getCurrentLocation());
         for (String entity : consumedEntity) {
             if (entity.equals("health")) {
                 consumed.interactWithEntity(player);
+                if(player.getHealth() == 0){
+                    for (Artefact artefact: player.getInventory().values()) {
+                        player.dropArtefect(artefact.getName());
+                        currentLocation.addEntity(artefact);
+                    }
+                    currentLocation.removeEntity(player.getName());
+                    player.setCurrentLocation(model.getStartLocation());
+                    model.getLocation(model.getStartLocation()).addPlayer(player);
+                    return "You are dead and have lost all your items, return to your birthplace.";
+                }
             } else {
                 for (Location location:model.getLocationsMap().values()) {
                     if(location.getEntitylist().containsKey(entity)){

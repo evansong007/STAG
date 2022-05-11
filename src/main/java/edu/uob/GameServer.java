@@ -57,10 +57,15 @@ public final class GameServer {
     *
     * <p>This method handles all incoming game commands and carries out the corresponding actions.
     */
-    public String handleCommand(String command) throws GameException.CommandException, GameException.ExecuteException {
+    public String handleCommand(String command) {
         // TODO implement your server logic here
-        GameContorller contorller = new GameContorller(model,command);
-        return contorller.executeCommand();
+        try {
+            GameContorller contorller = new GameContorller(model,command);
+            return contorller.executeCommand();
+        } catch (GameException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     //  === Methods below are there to facilitate server related operations. ===
@@ -99,8 +104,8 @@ public final class GameServer {
     */
     private void blockingHandleConnection(ServerSocket serverSocket) throws IOException {
         try (Socket s = serverSocket.accept();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream()));
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()))) {
+             BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream()));
+             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()))) {
             System.out.println("Connection established");
             String incomingCommand = reader.readLine();
             if(incomingCommand != null) {
@@ -109,10 +114,7 @@ public final class GameServer {
                 writer.write(result);
                 writer.write("\n" + END_OF_TRANSMISSION + "\n");
                 writer.flush();
-
             }
-        } catch (GameException.CommandException | GameException.ExecuteException e) {
-            throw new RuntimeException(e);
         }
     }
 }

@@ -180,8 +180,8 @@ public class GameBuilder {
         String fromName = fromLocation.getId().getId();
         com.alexmerz.graphviz.objects.Node toLocation = edge.getTarget().getNode();
         String toName = toLocation.getId().getId();
-        Location location = model.getLocationsMap().get(toName);
-        location.addDestination(fromName);
+        Location location = model.getLocationsMap().get(fromName);
+        location.addDestination(toName);
     }
 
     public GameModel getModel(){
