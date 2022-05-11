@@ -17,16 +17,12 @@ public class GameConsumed extends GameVistor{
         this.stroeroom = model.getStroeroom();
     }
 
-    @Override
-    public void interactWithEntity(GameEntity gameEntity) {
-        gameEntity.accept(this);
-    }
 
     @Override
     public void interactWithEntity(Artefact artefact) {
-        this.stroeroom.addEntity(artefact);
         this.player.dropArtefect(artefact.getName());
         this.currentLocation.removeEntity(artefact.getName());
+        this.stroeroom.addEntity(artefact);
 
     }
 

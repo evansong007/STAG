@@ -95,7 +95,7 @@ public class GameModel {
     public HashMap<String,Player> getPlayers(){return players;}
 
     public Location getStroeroom(){
-        return locationsMap.get("stroeroom");
+        return locationsMap.get("storeroom");
     }
 
 }

@@ -54,7 +54,7 @@ public class GameBuilder {
                 makeAction(action,model);
             }
         } catch (ParserConfigurationException | SAXException | IOException | DOMException e) {
-            throw new RuntimeException(e);
+            System.out.println(e);
         }
 
 
@@ -150,7 +150,7 @@ public class GameBuilder {
                 readPathOfLocation(edge);
             }
         } catch (FileNotFoundException | ParseException e) {
-            throw new RuntimeException(e);
+            System.out.println(e);
         }
     }
 

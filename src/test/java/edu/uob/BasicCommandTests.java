@@ -53,6 +53,8 @@ final class BasicCommandTests {
     System.out.println(response3);
     String response4 = server.handleCommand("haha:goto cabin").toLowerCase();
     System.out.println(response4);
+    String responsex = server.handleCommand("haha:drop key").toLowerCase();
+    System.out.println(responsex);
     String response5 = server.handleCommand("haha:open key").toLowerCase();
     System.out.println(response5);
     String response6 = server.handleCommand("haha:goto cellar").toLowerCase();

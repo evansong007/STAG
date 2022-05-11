@@ -16,11 +16,6 @@ public class GameProduced extends GameVistor{
     }
 
     @Override
-    public void interactWithEntity(GameEntity gameEntity) {
-        gameEntity.accept(this);
-    }
-
-    @Override
     public void interactWithEntity(Artefact artefact) {
         //remove form current location
         HashMap<String,Location> locationHashMap = model.getLocationsMap();

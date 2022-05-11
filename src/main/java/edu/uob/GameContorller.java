@@ -235,18 +235,21 @@ public class GameContorller {
         Location currentLocation = model.getLocation(player.getCurrentLocation());
         for (String entity : consumedEntity) {
             if (entity.equals("health")) {
-                consumed.interactWithEntity(player);
+                player.accept(consumed);
                 if (player.getHealth() == 0) {
                      return playerDead(player,currentLocation);
                 }
             } else {
                 if(model.getLocationsMap().containsKey(entity)){
-                    consumed.interactWithEntity(model.getLocation(entity));
+                    model.getLocation(entity).accept(consumed);
                 }else {
                     for (Location location : model.getLocationsMap().values()) {
                         if (location.getEntitylist().containsKey(entity)) {
-                            consumed.interactWithEntity(location.getEntity(entity));
+                            location.getEntity(entity).accept(consumed);
                         }
+                    }
+                    if(player.getInventory().containsKey(entity)){
+                        player.dropArtefect(entity).accept(consumed);
                     }
                 }
 
@@ -255,15 +258,18 @@ public class GameContorller {
 
         for (String entity : producedEntity) {
             if (entity.equals("health")) {
-                produced.interactWithEntity(player);
+                player.accept(produced);
             } else {
                 if(model.getLocationsMap().containsKey(entity)){
-                    produced.interactWithEntity(model.getLocation(entity));
+                    model.getLocation(entity).accept(produced);
                 }else {
                     for (Location location : model.getLocationsMap().values()) {
                         if (location.getEntitylist().containsKey(entity)) {
-                            produced.interactWithEntity(location.getEntity(entity));
+                            location.getEntity(entity).accept(produced);
                         }
+                    }
+                    if(player.getInventory().containsKey(entity)){
+                        player.dropArtefect(entity).accept(produced);
                     }
                 }
 

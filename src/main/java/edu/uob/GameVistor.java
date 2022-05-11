@@ -17,7 +17,6 @@ public abstract class GameVistor {
         this.action = action;
     }
 
-    public abstract void interactWithEntity(GameEntity gameEntity);
 
     public abstract void interactWithEntity(Artefact artefact);
 

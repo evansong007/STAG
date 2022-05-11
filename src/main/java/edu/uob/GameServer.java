@@ -38,7 +38,7 @@ public final class GameServer {
     * @param actionsFile The game configuration file containing all game actions to use in your game
     *
     */
-    public GameServer(File entitiesFile, File actionsFile) {
+    public GameServer(File entitiesFile, File actionsFile){
         // TODO implement your server logic here
             GameBuilder builder = new GameBuilder(entitiesFile,actionsFile);
             builder.importActions();
