@@ -1,8 +1,12 @@
 package edu.uob;
 
+import com.alexmerz.graphviz.ParseException;
 import edu.uob.GameException.GameException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.nio.file.Paths;
 import java.io.IOException;
@@ -27,16 +31,8 @@ final class BasicCommandTests {
 
   // Test to spawn a new server and send a simple "look" command
   @Test
-  void testLookingAroundStartLocation() throws GameException {
+  void testLookingAroundStartLocation(){
     String response = server.handleCommand("player 1: look").toLowerCase();
-    String response1 = server.handleCommand("player 1: goto cellar").toLowerCase();
-    String response2 = server.handleCommand("player 1: inv").toLowerCase();
-    String response3 = server.handleCommand("player 1: health").toLowerCase();
-
-    System.out.println(response+"\n");
-    System.out.println(response1+"\n");
-    System.out.println(response2+"\n");
-    System.out.println(response3+"\n");
 
     assertTrue(response.contains("empty room"), "Did not see description of room in response to look");
     assertTrue(response.contains("magic potion"), "Did not see description of artifacts in response to look");
@@ -44,5 +40,33 @@ final class BasicCommandTests {
   }
 
   // Add more unit tests or integration tests here.
+  @Test
+  void testinventory(){
+
+    String response = server.handleCommand("haha: look").toLowerCase();
+    System.out.println(response);
+    String response1 = server.handleCommand("haha:get potion").toLowerCase();
+    System.out.println(response1);
+    String response2 = server.handleCommand("haha:goto forest").toLowerCase();
+    System.out.println(response2);
+    String response3 = server.handleCommand("haha:get key").toLowerCase();
+    System.out.println(response3);
+    String response4 = server.handleCommand("haha:goto cabin").toLowerCase();
+    System.out.println(response4);
+    String response5 = server.handleCommand("haha:open key").toLowerCase();
+    System.out.println(response5);
+    String response6 = server.handleCommand("haha:goto cellar").toLowerCase();
+    System.out.println(response6);
+    String response7 = server.handleCommand("haha:hit elf").toLowerCase();
+    System.out.println(response7);
+    String response8 = server.handleCommand("haha:look").toLowerCase();
+    System.out.println(response8);
+    String response9 = server.handleCommand("haha:inv").toLowerCase();
+    System.out.println(response9);
+    String response10 = server.handleCommand("haha:goto cabin").toLowerCase();
+    System.out.println(response10);
+
+
+  }
 
 }

@@ -4,9 +4,17 @@ import edu.uob.entity.*;
 import edu.uob.entity.Character;
 
 public class GameConsumed extends GameVistor{
+    private Player player;
+
+    private Location currentLocation;
+
+    private Location stroeroom;
 
     public GameConsumed(GameModel model, String currentPlayer, GameAction action) {
         super(model, currentPlayer, action);
+        this.player = model.getPlayer(currentPlayer);
+        this.currentLocation = model.getLocation(player.getCurrentLocation());
+        this.stroeroom = model.getStroeroom();
     }
 
     @Override
@@ -16,37 +24,28 @@ public class GameConsumed extends GameVistor{
 
     @Override
     public void interactWithEntity(Artefact artefact) {
-        Player player = model.getPlayer(currentPlayer);
-        Location currentLocation = model.getLocation(player.getCurrentLocation());
-        Location storeroom = model.getStroeroom();
-        player.dropArtefect(artefact.getName());
-        currentLocation.removeEntity(artefact.getName());
-        storeroom.addEntity(artefact);
+        this.stroeroom.addEntity(artefact);
+        this.player.dropArtefect(artefact.getName());
+        this.currentLocation.removeEntity(artefact.getName());
+
     }
 
     @Override
     public void interactWithEntity(Character character) {
-        Player player = model.getPlayer(currentPlayer);
-        Location currentLocation = model.getLocation(player.getCurrentLocation());
-        Location storeroom = model.getStroeroom();
-        currentLocation.removeEntity(currentPlayer);
-        storeroom.addEntity(character);
+        this.stroeroom.addEntity(character);
+        this.currentLocation.removeEntity(currentPlayer);
+
     }
 
     @Override
     public void interactWithEntity(Furniture furniture) {
-        Player player = model.getPlayer(currentPlayer);
-        Location currentLocation = model.getLocation(player.getCurrentLocation());
-        Location storeroom = model.getStroeroom();
-        currentLocation.removeEntity(furniture.getName());
-        storeroom.addEntity(furniture);
+        this.stroeroom.addEntity(furniture);
+        this.currentLocation.removeEntity(furniture.getName());
     }
 
     @Override
     public void interactWithEntity(Location location) {
-        Player player = model.getPlayer(currentPlayer);
-        Location currentLocation = model.getLocation(player.getCurrentLocation());
-        currentLocation.getDestinations().remove(location.getName());
+        this.currentLocation.getDestinations().remove(location.getName());
     }
 
     @Override

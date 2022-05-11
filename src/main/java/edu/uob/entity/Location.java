@@ -43,9 +43,15 @@ public class Location extends GameEntity {
         return destinations;
     }
 
-    public String getEntities() {
-        String entities = entitylist.keySet().toString();
-
+    public String getDescriptionOfMap() {
+        String entities = "You can see: \n";
+        for (GameEntity entity: entitylist.values()) {
+            entities = entities.concat(entity.getDescription() + "\n") ;
+        }
+        entities = entities.concat("You can go : ");
+        for (String path: destinations) {
+            entities = entities.concat(path) + " ";
+        }
         return entities;
     }
 

@@ -7,8 +7,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GameProduced extends GameVistor{
+    private Player player;
+    private Location currentLocation;
     public GameProduced(GameModel model, String currentPlayer, GameAction action) {
         super(model, currentPlayer, action);
+        this.player = model.getPlayer(currentPlayer);
+        this.currentLocation = model.getLocation(player.getCurrentLocation());
     }
 
     @Override
@@ -21,39 +25,36 @@ public class GameProduced extends GameVistor{
         //remove form current location
         HashMap<String,Location> locationHashMap = model.getLocationsMap();
         locationHashMap.forEach((k,v)->v.removeEntity(artefact.getName()));
-        Player player = model.getPlayer(currentPlayer);
-        Location currentLocation = model.getLocation(player.getCurrentLocation());
         //add entity to current location
-        currentLocation.addEntity(artefact);
+        this.currentLocation.addEntity(artefact);
+
 
     }
 
     @Override
     public void interactWithEntity(Character character) {
+
         //remove form current location
         HashMap<String,Location> locationHashMap = model.getLocationsMap();
         locationHashMap.forEach((k,v)->v.removeEntity(character.getName()));
-        Player player = model.getPlayer(currentPlayer);
-        Location currentLocation = model.getLocation(player.getCurrentLocation());
         //add entity to current location
-        currentLocation.addEntity(character);
+        this.currentLocation.addEntity(character);
+
     }
 
     @Override
     public void interactWithEntity(Furniture furniture) {
+
         //remove form current location
         HashMap<String,Location> locationHashMap = model.getLocationsMap();
         locationHashMap.forEach((k,v)->v.removeEntity(furniture.getName()));
-        Player player = model.getPlayer(currentPlayer);
-        Location currentLocation = model.getLocation(player.getCurrentLocation());
         //add entity to current location
         currentLocation.addEntity(furniture);
+
     }
 
     @Override
     public void interactWithEntity(Location location) {
-        Player player = model.getPlayer(currentPlayer);
-        Location currentLocation = model.getLocation(player.getCurrentLocation());
         currentLocation.getDestinations().add(location.getName());
     }
 

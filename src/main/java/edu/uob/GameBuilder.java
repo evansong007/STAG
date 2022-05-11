@@ -6,10 +6,7 @@ import com.alexmerz.graphviz.objects.Edge;
 import com.alexmerz.graphviz.objects.Graph;
 import edu.uob.entity.*;
 import edu.uob.entity.Character;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import org.w3c.dom.traversal.DocumentTraversal;
 import org.w3c.dom.traversal.NodeFilter;
 import org.w3c.dom.traversal.NodeIterator;
@@ -40,21 +37,26 @@ public class GameBuilder {
     }
 
     //reader actions form XML File
-    public void importActions() throws ParserConfigurationException, IOException, SAXException {
-        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        Document document = builder.parse(actionsFile);
-        DocumentTraversal trav = (DocumentTraversal) document;
+    public void importActions() {
+        try{
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document document = builder.parse(actionsFile);
+            DocumentTraversal trav = (DocumentTraversal) document;
 
 
-        MyFilter filter = new MyFilter();
-        NodeIterator it = trav.createNodeIterator(document.getDocumentElement(),
-                NodeFilter.SHOW_ELEMENT, filter, true);
+            MyFilter filter = new MyFilter();
+            NodeIterator it = trav.createNodeIterator(document.getDocumentElement(),
+                    NodeFilter.SHOW_ELEMENT, filter, true);
 
-        for (Node node = it.nextNode(); node != null;
-             node = it.nextNode()) {
-            Element action = (Element) node;
-            makeAction(action,model);
+            for (Node node = it.nextNode(); node != null;
+                 node = it.nextNode()) {
+                Element action = (Element) node;
+                makeAction(action,model);
+            }
+        } catch (ParserConfigurationException | SAXException | IOException | DOMException e) {
+            throw new RuntimeException(e);
         }
+
 
     }
 
@@ -116,36 +118,39 @@ public class GameBuilder {
         }
     }
 
-    public void importEntities() throws FileNotFoundException, ParseException {
-        Parser parser = new Parser();
-        FileReader reader = new FileReader(entitiesFile);
-        parser.parse(reader);
-        Graph wholeDocument = parser.getGraphs().get(0);
-        ArrayList<Graph> sections = wholeDocument.getSubgraphs();
-        ArrayList<Graph> locations = sections.get(0).getSubgraphs();
-        Graph firstLocation = locations.get(0);
-        String Name = firstLocation.getNodes(false).get(0).getId().getId();
-        model.setStartLocation(Name);
+    public void importEntities() {
+        try {
+            Parser parser = new Parser();
+            FileReader reader = new FileReader(entitiesFile);
+            parser.parse(reader);
+            Graph wholeDocument = parser.getGraphs().get(0);
+            ArrayList<Graph> sections = wholeDocument.getSubgraphs();
+            ArrayList<Graph> locations = sections.get(0).getSubgraphs();
+            Graph firstLocation = locations.get(0);
+            String Name = firstLocation.getNodes(false).get(0).getId().getId();
+            model.setStartLocation(Name);
 
-        //read loaction form .dot
-        for (Graph location : locations) {
-            com.alexmerz.graphviz.objects.Node locationDetails = location.getNodes(false).get(0);
-            // read name and description of location
-            String locationName = locationDetails.getId().getId();
-            model.addsubject(locationName);
-            String description = locationDetails.getAttribute("description");
-            Location locationMap = new Location(locationName, description);
-            model.addLocation(locationMap);
-            ArrayList<Graph> entityList = location.getSubgraphs();
-            for (Graph entity : entityList) {
-                readEntityFormLocation(locationMap,entity);
+            //read loaction form .dot
+            for (Graph location : locations) {
+                com.alexmerz.graphviz.objects.Node locationDetails = location.getNodes(false).get(0);
+                // read name and description of location
+                String locationName = locationDetails.getId().getId();
+                model.addsubject(locationName);
+                String description = locationDetails.getAttribute("description");
+                Location locationMap = new Location(locationName, description);
+                model.addLocation(locationMap);
+                ArrayList<Graph> entityList = location.getSubgraphs();
+                for (Graph entity : entityList) {
+                    readEntityFormLocation(locationMap,entity);
+                }
             }
 
-        }
-
-        ArrayList<Edge> paths = sections.get(1).getEdges();
-        for (Edge edge: paths) {
-            readPathOfLocation(edge);
+            ArrayList<Edge> paths = sections.get(1).getEdges();
+            for (Edge edge: paths) {
+                readPathOfLocation(edge);
+            }
+        } catch (FileNotFoundException | ParseException e) {
+            throw new RuntimeException(e);
         }
     }
 

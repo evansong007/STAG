@@ -40,15 +40,12 @@ public final class GameServer {
     */
     public GameServer(File entitiesFile, File actionsFile) {
         // TODO implement your server logic here
-        try {
             GameBuilder builder = new GameBuilder(entitiesFile,actionsFile);
             builder.importActions();
             builder.importEntities();
             model = builder.getModel();
 
-        } catch (ParserConfigurationException | IOException | SAXException | ParseException e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
     /**
@@ -63,7 +60,7 @@ public final class GameServer {
             GameContorller contorller = new GameContorller(model,command);
             return contorller.executeCommand();
         } catch (GameException e) {
-            throw new RuntimeException(e);
+            return e.getMessage();
         }
 
     }

@@ -19,7 +19,7 @@ public class GameContorller {
     private GameAction action;
 
 
-    public GameContorller(GameModel model, String command) {
+    public GameContorller(GameModel model, String command) throws GameException.CommandException {
         this.model = model;
         GameTokenizer tokenizer = new GameTokenizer(command);
         this.player = tokenizer.getPlayerName();
@@ -31,9 +31,8 @@ public class GameContorller {
 
     public String executeCommand() throws GameException {
         checkPlayer();
-        if (actionsOfCommand.isEmpty()) {
-            throw new GameException.CommandException("No valid action in command");
-        }
+        checkCommand();
+
         Player currentPlayer = model.getPlayer(player);
         String trigger = actionsOfCommand.get(0);
         switch (trigger) {
@@ -58,11 +57,18 @@ public class GameContorller {
         }
     }
 
+    public void checkCommand() throws GameException.CommandException {
+        if (actionsOfCommand.isEmpty()) {
+            throw new GameException.CommandException("No valid action in command");
+        }
+    }
+
     public void checkPlayer() {
         if (!model.getPlayers().containsKey(this.player)) {
-            Player player = new Player(this.player, "A student of Bristol");
+            Player player = new Player(this.player, this.player);
             player.setCurrentLocation(model.getStartLocation());
             model.addPlayer(player);
+            model.getLocation(model.getStartLocation()).addEntity(player);
         }
     }
 
@@ -79,9 +85,7 @@ public class GameContorller {
         String result = "Your are in : ";
 
         Location currentLocation = model.getLocation(currentPlayer.getCurrentLocation());
-        String entities = currentLocation.getEntities();
-        String path = currentLocation.getDestinations().toString();
-        return result + currentLocation.getName() + "\nYou can see : " + entities + "\nYou can go : " + path;
+        return result + currentLocation.getDescription() + "\n" + currentLocation.getDescriptionOfMap();
     }
 
     public String executeHealth(Player currentPlayer) {
@@ -154,11 +158,12 @@ public class GameContorller {
             currentLocation.removeEntity(currentPlayer.getName());
             currentPlayer.setCurrentLocation(target);
             model.getLocation(target).addPlayer(currentPlayer);
+            ;
         } else {
             throw new GameException.CommandException("Ambiguous Command");
         }
 
-        return result + target;
+        return result + target + "\n" + executeLook(currentPlayer);
     }
 
     public void checkAction(Player currentPlayer, String trigger) throws GameException.CommandException {
@@ -231,37 +236,52 @@ public class GameContorller {
         for (String entity : consumedEntity) {
             if (entity.equals("health")) {
                 consumed.interactWithEntity(player);
-                if(player.getHealth() == 0){
-                    for (Artefact artefact: player.getInventory().values()) {
-                        player.dropArtefect(artefact.getName());
-                        currentLocation.addEntity(artefact);
-                    }
-                    currentLocation.removeEntity(player.getName());
-                    player.setCurrentLocation(model.getStartLocation());
-                    model.getLocation(model.getStartLocation()).addPlayer(player);
-                    return "You are dead and have lost all your items, return to your birthplace.";
+                if (player.getHealth() == 0) {
+                     return playerDead(player,currentLocation);
                 }
             } else {
-                for (Location location:model.getLocationsMap().values()) {
-                    if(location.getEntitylist().containsKey(entity)){
-                        consumed.interactWithEntity(location.getEntity(entity));
+                if(model.getLocationsMap().containsKey(entity)){
+                    consumed.interactWithEntity(model.getLocation(entity));
+                }else {
+                    for (Location location : model.getLocationsMap().values()) {
+                        if (location.getEntitylist().containsKey(entity)) {
+                            consumed.interactWithEntity(location.getEntity(entity));
+                        }
                     }
                 }
+
             }
         }
 
-        for (String entity: producedEntity) {
+        for (String entity : producedEntity) {
             if (entity.equals("health")) {
                 produced.interactWithEntity(player);
             } else {
-                for (Location location:model.getLocationsMap().values()) {
-                    if(location.getEntitylist().containsKey(entity)){
-                        produced.interactWithEntity(location.getEntity(entity));
+                if(model.getLocationsMap().containsKey(entity)){
+                    produced.interactWithEntity(model.getLocation(entity));
+                }else {
+                    for (Location location : model.getLocationsMap().values()) {
+                        if (location.getEntitylist().containsKey(entity)) {
+                            produced.interactWithEntity(location.getEntity(entity));
+                        }
                     }
                 }
+
             }
         }
         return action.getNarration();
+    }
+
+    public String playerDead(Player player, Location currentLocation) {
+        for (Artefact artefact : player.getInventory().values()) {
+            currentLocation.addEntity(artefact);
+        }
+        player.getInventory().clear();
+        currentLocation.removeEntity(player.getName());
+        player.setCurrentLocation(model.getStartLocation());
+        model.getLocation(model.getStartLocation()).addPlayer(player);
+        player.resethealth();
+        return "You are dead and have lost all your items, return to your birthplace.";
     }
 
 }
