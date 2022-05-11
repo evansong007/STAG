@@ -65,7 +65,7 @@ public class GameContorller {
 
     public void checkPlayer() {
         if (!model.getPlayers().containsKey(this.player)) {
-            Player player = new Player(this.player, this.player);
+            Player player = new Player(this.player, "A student of Bristol");
             player.setCurrentLocation(model.getStartLocation());
             model.addPlayer(player);
             model.getLocation(model.getStartLocation()).addEntity(player);
@@ -99,22 +99,24 @@ public class GameContorller {
         int numberOfCanBeGet = 0;
         String target = "";
         for (String subject : subjectOfCommand) {
-            if (currentLocation.getEntitylist().containsKey(subject)) {
-                numberOfCanBeGet += 1;
-                target = subject;
+            if(currentLocation.getEntitylist().containsKey(subject)){
+                if(currentLocation.getEntity(subject) instanceof Artefact){
+                    numberOfCanBeGet += 1;
+                    target = subject;
+                }
             }
         }
+
         if (numberOfCanBeGet == 0) {
-            throw new GameException.CommandException("No Valid entity can obtain");
+            throw new GameException.CommandException("No Valid entity can drop");
         } else if (numberOfCanBeGet == 1) {
             GameEntity entity = currentLocation.getEntity(target);
-            currentLocation.removeEntity(entity.getName());
+            currentLocation.removeEntity(target);
             currentPlayer.getArtefect((Artefact) entity);
         } else {
             throw new GameException.CommandException("Ambiguous Command");
         }
-
-        return result + target;
+        return result + target ;
     }
 
     public String executeDrop(Player currentPlayer) throws GameException.CommandException {

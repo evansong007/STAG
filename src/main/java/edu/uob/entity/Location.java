@@ -46,7 +46,7 @@ public class Location extends GameEntity {
     public String getDescriptionOfMap() {
         String entities = "You can see: \n";
         for (GameEntity entity: entitylist.values()) {
-            entities = entities.concat(entity.getDescription() + "\n") ;
+            entities = entities.concat(entity.name +" : "+ entity.getDescription() + "\n") ;
         }
         entities = entities.concat("You can go : ");
         for (String path: destinations) {

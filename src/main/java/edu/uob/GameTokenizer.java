@@ -15,12 +15,15 @@ public class GameTokenizer {
         this.command = command.split(":",2)[1].toLowerCase().trim().split(" ");
     }
 
-    public ArrayList<String> getActions(Set<String> triggers){
+    public ArrayList<String> getActions(Set<String> triggers) throws GameException.CommandException {
         ArrayList<String> actions = new ArrayList<>();
         for (String word:command) {
             if(triggers.contains(word)){
                 actions.add(word);
             }
+        }
+        if(actions.size() > 1){
+            throw new GameException.CommandException("Too many triggers in command");
         }
         return actions;
     }
