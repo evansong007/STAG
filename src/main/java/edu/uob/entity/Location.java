@@ -66,6 +66,14 @@ public class Location extends GameEntity{
         return artefectList;
     }
 
+    public HashMap<String,Character> getCharacterList(){
+        return characterList;
+    }
+
+    public HashMap<String,Furniture> getFurnitureList(){
+        return furnitureList;
+    }
+
     public Artefact getArtefect(String entity){
         return artefectList.get(entity);
     }
@@ -77,4 +85,5 @@ public class Location extends GameEntity{
     public void removePlayer(String player){
          playerList.remove(player);
     }
+
 }

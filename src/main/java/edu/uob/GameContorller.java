@@ -15,6 +15,8 @@ public class GameContorller {
 
     private ArrayList<String> subjectOfCommand;
 
+    private GameAction action;
+
 
     public GameContorller(GameModel model,String command){
         this.model = model;
@@ -22,6 +24,7 @@ public class GameContorller {
         this.player = tokenizer.getPlayerName();
         this.actionsOfCommand = tokenizer.getActions(model.getTriggerList());
         this.subjectOfCommand = tokenizer.getSubjects(model.getSubjectList());
+        this.action = new GameAction();
 
     }
 
@@ -47,7 +50,9 @@ public class GameContorller {
             case "goto":
                 return executeGoto(currentPlayer);
             default:
-                return "haha";
+                checkAction(currentPlayer,trigger);
+                return "hah";
+
         }
     }
 
@@ -154,13 +159,71 @@ public class GameContorller {
         return result + target;
     }
 
-    public String executeAction(Player currentPlayer,String trigger){
-        HashSet<GameAction> actions = model.getAction(trigger);
-        ArrayList<GameAction> executableActions = new ArrayList<>();
-        for (GameAction action: actions) {
+    public void checkAction(Player currentPlayer,String trigger) throws GameException.CommandException {
 
+        //match trigger and command
+        ArrayList<GameAction> potentialActions = getPotentialAction(trigger);
+
+        Location currentLocation = model.getLocation(currentPlayer.getCurrentLocation());
+        ArrayList<GameAction> validAction = new ArrayList<>();
+        for (GameAction action: potentialActions) {
+            Boolean valid = true;
+            for(String subject:action.getSubject()){
+                if(!checkInventory(subject,currentPlayer)&&!checkCurrentLocation(subject,currentLocation)){
+                    valid = false;
+                }
+            }
+            if(valid){
+                validAction.add(action);
+            }
         }
 
-        return "hahah";
+        if(validAction.size() == 0){
+            throw new GameException.CommandException("No valid subject in command");
+        }else if(validAction.size() > 1){
+            throw new GameException.CommandException("Ambiguous Command");
+        }
+
+        this.action = validAction.get(0);
+    }
+
+    public Boolean checkInventory(String subject,Player currentPlayer){
+        if(currentPlayer.getInventory().containsKey(subject)){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public Boolean checkCurrentLocation(String subject,Location currenLocation){
+        if(currenLocation.getCharacterList().containsKey(subject)||
+        currenLocation.getFurnitureList().containsKey(subject)||
+                currenLocation.getArtefectList().containsKey(subject)){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public ArrayList<GameAction> getPotentialAction(String trigger){
+        //match trigger and command
+        HashSet<GameAction> actions = model.getAction(trigger);
+        ArrayList<GameAction> potentialActions = new ArrayList<>();
+        for (GameAction action: actions) {
+            for (String subject: subjectOfCommand) {
+                if(action.getSubject().contains(subject)){
+                    potentialActions.add(action);
+                    break;
+                }
+            }
+        }
+
+        return potentialActions;
+    }
+
+    public String executeAction(GameAction action){
+
+
+        return "asd";
     }
 }
