@@ -1,5 +1,7 @@
 package edu.uob.entity;
 
+import edu.uob.GameVistor;
+
 import java.util.HashMap;
 
 public class Player extends GameEntity {
@@ -11,6 +13,11 @@ public class Player extends GameEntity {
         super(name, description);
         this.health = 3;
         this.inventory = new HashMap<>();
+    }
+
+    @Override
+    public void accept(GameVistor vistor) {
+
     }
 
 

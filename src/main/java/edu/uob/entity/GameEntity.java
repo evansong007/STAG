@@ -1,5 +1,7 @@
 package edu.uob.entity;
 
+import edu.uob.GameVistor;
+
 public abstract class GameEntity
 {
     String name;
@@ -20,6 +22,8 @@ public abstract class GameEntity
     {
         return description;
     }
+
+    public abstract void accept(GameVistor vistor);
 
 
 

@@ -2,6 +2,7 @@ package edu.uob.entity;
 
 import com.alexmerz.graphviz.objects.Edge;
 import com.alexmerz.graphviz.objects.Graph;
+import edu.uob.GameVistor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +27,11 @@ public class Location extends GameEntity{
         this.furnitureList = new HashMap<>();
         this.playerList = new HashMap<>();
         this.destinations = new HashSet<>();
+    }
+
+    @Override
+    public void accept(GameVistor vistor) {
+
     }
 
     public void addArtefact(Artefact entity) {

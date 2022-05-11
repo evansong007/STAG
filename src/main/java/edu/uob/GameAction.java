@@ -41,4 +41,16 @@ public class GameAction
     public ArrayList<String> getSubject(){
         return subjects;
     }
+
+    public ArrayList<String> getConsumed(){
+        return consumed;
+    }
+
+    public ArrayList<String> getProduced(){
+        return produced;
+    }
+
+    public String getNarration(){
+        return narration;
+    }
 }
