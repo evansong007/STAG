@@ -52,7 +52,9 @@ public class GameProduceVisitor extends GameVisitor {
 
     @Override
     public void interactWithEntity(Player player) {
-        player.increaseHealth();
+        if(player.getHealth() < 3){
+            player.increaseHealth();
+        }
     }
 
 }

@@ -4,6 +4,7 @@ import edu.uob.GameException.GameException;
 
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class GameTokenizer {
     private final String[] command;
@@ -13,6 +14,7 @@ public class GameTokenizer {
         if(command.equals("")) throw new GameException.CommandException("Empty Command");
         if(!command.contains(":"))throw new GameException.CommandException("Please give player name");
         this.playerName = command.split(":",2)[0];
+        checkPlayerName(playerName);
         this.command = command.split(":",2)[1].toLowerCase().trim().split(" ");
     }
 
@@ -39,6 +41,12 @@ public class GameTokenizer {
         return entities;
     }
 
+    public void checkPlayerName(String playerName) throws GameException.CommandException {
+        String pattern = "^[A-Za-z' \\-]*$";
+        if(! Pattern.matches(pattern, playerName)){
+            throw new GameException.CommandException("Invalid playerName");
+        }
+    }
     public String getPlayerName(){
         return playerName;
     }
