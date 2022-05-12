@@ -1,10 +1,6 @@
 package edu.uob;
 
-import com.alexmerz.graphviz.ParseException;
 import edu.uob.GameException.GameException;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -19,11 +15,11 @@ import java.nio.file.Paths;
 public final class GameServer {
 
     private static final char END_OF_TRANSMISSION = 4;
-    private GameModel model;
+    private final GameModel model;
 
     public static void main(String[] args) throws IOException {
-        File entitiesFile = Paths.get("config" + File.separator + "basic-entities.dot").toAbsolutePath().toFile();
-        File actionsFile = Paths.get("config" + File.separator + "basic-actions.xml").toAbsolutePath().toFile();
+        File entitiesFile = Paths.get("config" + File.separator + "extended-entities.dot").toAbsolutePath().toFile();
+        File actionsFile = Paths.get("config" + File.separator + "extended-actions.xml").toAbsolutePath().toFile();
         GameServer server = new GameServer(entitiesFile, actionsFile);
         server.blockingListenOn(8888);
     }
@@ -44,8 +40,6 @@ public final class GameServer {
             builder.importActions();
             builder.importEntities();
             model = builder.getModel();
-
-
     }
 
     /**
@@ -57,8 +51,8 @@ public final class GameServer {
     public String handleCommand(String command) {
         // TODO implement your server logic here
         try {
-            GameContorller contorller = new GameContorller(model,command);
-            return contorller.executeCommand();
+            GameController controller = new GameController(model,command);
+            return controller.executeCommand();
         } catch (GameException e) {
             return e.getMessage();
         }

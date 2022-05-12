@@ -1,13 +1,13 @@
 package edu.uob.entity;
 
-import edu.uob.GameVistor;
+import edu.uob.GameVisitor;
 
 import java.util.HashMap;
 
 public class Player extends GameEntity {
 
     private Integer health ;
-    private HashMap<String,Artefact> inventory;
+    private final HashMap<String,Artefact> inventory;
     private String currentLocation;
     public Player(String name, String description) {
         super(name, description);
@@ -16,7 +16,7 @@ public class Player extends GameEntity {
     }
 
     @Override
-    public void accept(GameVistor vistor) {
+    public void accept(GameVisitor vistor) {
         vistor.interactWithEntity(this);
     }
 

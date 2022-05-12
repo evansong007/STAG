@@ -16,7 +16,7 @@ public class GameException extends Exception {
         private static final long serialVersionUID = 7981967213598512634L;
 
         public CommandException(String message) {
-            super(message);
+            super("Warning:"+ message);
         }
     }
 

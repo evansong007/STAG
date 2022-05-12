@@ -4,22 +4,20 @@ import edu.uob.GameException.GameException;
 import edu.uob.entity.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Locale;
 
-public class GameContorller {
-    private GameModel model;
+public class GameController {
+    private final GameModel model;
 
-    private String player;
-    private ArrayList<String> actionsOfCommand;
+    private final String player;
+    private final ArrayList<String> actionsOfCommand;
 
-    private ArrayList<String> subjectOfCommand;
+    private final ArrayList<String> subjectOfCommand;
 
     private GameAction action;
 
 
-    public GameContorller(GameModel model, String command) throws GameException.CommandException {
+    public GameController(GameModel model, String command) throws GameException.CommandException {
         this.model = model;
         GameTokenizer tokenizer = new GameTokenizer(command);
         this.player = tokenizer.getPlayerName();
@@ -51,7 +49,6 @@ public class GameContorller {
                 return executeGoto(currentPlayer);
             default:
                 checkAction(currentPlayer, trigger);
-
                 return executeAction(action);
 
         }
@@ -108,7 +105,7 @@ public class GameContorller {
         }
 
         if (numberOfCanBeGet == 0) {
-            throw new GameException.CommandException("No Valid entity can drop");
+            throw new GameException.CommandException("No Valid entity can get");
         } else if (numberOfCanBeGet == 1) {
             GameEntity entity = currentLocation.getEntity(target);
             currentLocation.removeEntity(target);
@@ -120,7 +117,7 @@ public class GameContorller {
     }
 
     public String executeDrop(Player currentPlayer) throws GameException.CommandException {
-        String result = "You have droped : ";
+        String result = "You have drop : ";
         Location currentLocation = model.getLocation(currentPlayer.getCurrentLocation());
         int numberOfCanBeGet = 0;
         String target = "";
@@ -160,7 +157,6 @@ public class GameContorller {
             currentLocation.removeEntity(currentPlayer.getName());
             currentPlayer.setCurrentLocation(target);
             model.getLocation(target).addPlayer(currentPlayer);
-            ;
         } else {
             throw new GameException.CommandException("Ambiguous Command");
         }
@@ -176,7 +172,7 @@ public class GameContorller {
         Location currentLocation = model.getLocation(currentPlayer.getCurrentLocation());
         ArrayList<GameAction> validAction = new ArrayList<>();
         for (GameAction action : potentialActions) {
-            Boolean valid = true;
+            boolean valid = true;
             for (String subject : action.getSubject()) {
                 if (!checkInventory(subject, currentPlayer) && !checkCurrentLocation(subject, currentLocation)) {
                     valid = false;
@@ -197,19 +193,11 @@ public class GameContorller {
     }
 
     public Boolean checkInventory(String subject, Player currentPlayer) {
-        if (currentPlayer.getInventory().containsKey(subject)) {
-            return true;
-        } else {
-            return false;
-        }
+        return currentPlayer.getInventory().containsKey(subject);
     }
 
     public Boolean checkCurrentLocation(String subject, Location currenLocation) {
-        if (currenLocation.getEntitylist().containsKey(subject)) {
-            return true;
-        } else {
-            return false;
-        }
+        return currenLocation.getEntitylist().containsKey(subject);
     }
 
     public ArrayList<GameAction> getPotentialAction(String trigger) {
@@ -228,9 +216,9 @@ public class GameContorller {
         return potentialActions;
     }
 
-    public String executeAction(GameAction action) {
-        GameConsumed consumed = new GameConsumed(model, player, action);
-        GameProduced produced = new GameProduced(model, player, action);
+    public String executeAction(GameAction action) throws GameException.CommandException {
+        GameConsumeVisitor consumed = new GameConsumeVisitor(model, player, action);
+        GameProduceVisitor produced = new GameProduceVisitor(model, player, action);
         ArrayList<String> consumedEntity = action.getConsumed();
         ArrayList<String> producedEntity = action.getProduced();
         Player player = model.getPlayer(this.player);
@@ -242,18 +230,23 @@ public class GameContorller {
                      return playerDead(player,currentLocation);
                 }
             } else {
+                boolean findSubject = false;
                 if(model.getLocationsMap().containsKey(entity)){
                     model.getLocation(entity).accept(consumed);
+                    findSubject = true;
                 }else {
                     for (Location location : model.getLocationsMap().values()) {
                         if (location.getEntitylist().containsKey(entity)) {
                             location.getEntity(entity).accept(consumed);
+                            findSubject = true;
                         }
                     }
                     if(player.getInventory().containsKey(entity)){
                         player.dropArtefect(entity).accept(consumed);
+                        findSubject =true;
                     }
                 }
+                if(!findSubject)throw new GameException.CommandException("Warning: Game error,Could not produce subject");
 
             }
         }

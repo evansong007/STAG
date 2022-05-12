@@ -6,11 +6,12 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public class GameTokenizer {
-    private String[] command;
-    private String playerName;
+    private final String[] command;
+    private final String playerName;
 
     public GameTokenizer(String command) throws GameException.CommandException {
         if(command.equals("")) throw new GameException.CommandException("Empty Command");
+        if(!command.contains(":"))throw new GameException.CommandException("Please give player name");
         this.playerName = command.split(":",2)[0];
         this.command = command.split(":",2)[1].toLowerCase().trim().split(" ");
     }

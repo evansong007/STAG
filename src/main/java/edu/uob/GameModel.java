@@ -1,21 +1,18 @@
 package edu.uob;
 
-import edu.uob.entity.GameEntity;
 import edu.uob.entity.Location;
 import edu.uob.entity.Player;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 public class GameModel {
-    private HashMap<String, HashSet<GameAction>> actionMap;
-    private HashMap<String, Location> locationsMap;
-    private HashMap<String,Player> players;
+    private final HashMap<String, HashSet<GameAction>> actionMap;
+    private final HashMap<String, Location> locationsMap;
+    private final HashMap<String,Player> players;
     private String startLocation;
-    private Set<String> triggerList;
-    private Set<String> subjectList;
+    private final Set<String> triggerList;
+    private final Set<String> subjectList;
 
     public GameModel(){
         this.actionMap = new HashMap<>();
@@ -46,9 +43,6 @@ public class GameModel {
         locationsMap.put(location.getName(),location);
     }
 
-    public HashMap<String,HashSet<GameAction>> getActionMap(){
-        return actionMap;
-    }
 
     public HashMap<String,Location> getLocationsMap(){return locationsMap;}
 

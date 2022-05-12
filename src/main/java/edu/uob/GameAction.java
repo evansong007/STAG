@@ -5,9 +5,9 @@ import java.util.ArrayList;
 public class GameAction
 {
     private String trigger;
-    private ArrayList<String> subjects;
-    private ArrayList<String> consumed;
-    private ArrayList<String> produced;
+    private final ArrayList<String> subjects;
+    private final ArrayList<String> consumed;
+    private final ArrayList<String> produced;
 
     private String narration;
 

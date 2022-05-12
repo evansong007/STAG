@@ -1,18 +1,15 @@
 package edu.uob.entity;
 
-import com.alexmerz.graphviz.objects.Edge;
-import com.alexmerz.graphviz.objects.Graph;
-import edu.uob.GameVistor;
 
-import java.util.ArrayList;
+import edu.uob.GameVisitor;
 import java.util.HashMap;
 import java.util.HashSet;
 
 public class Location extends GameEntity {
 
-    private HashMap<String, GameEntity> entitylist;
+    private final HashMap<String, GameEntity> entitylist;
 
-    private HashSet<String> destinations;
+    private final HashSet<String> destinations;
 
 
     public Location(String name, String description) {
@@ -22,7 +19,7 @@ public class Location extends GameEntity {
     }
 
     @Override
-    public void accept(GameVistor vistor) {
+    public void accept(GameVisitor vistor) {
         vistor.interactWithEntity(this);
     }
 

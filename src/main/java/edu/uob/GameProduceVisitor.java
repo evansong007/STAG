@@ -2,16 +2,13 @@ package edu.uob;
 
 import edu.uob.entity.*;
 import edu.uob.entity.Character;
-
 import java.util.HashMap;
-import java.util.Map;
 
-public class GameProduced extends GameVistor{
-    private Player player;
-    private Location currentLocation;
-    public GameProduced(GameModel model, String currentPlayer, GameAction action) {
+public class GameProduceVisitor extends GameVisitor {
+    private final Location currentLocation;
+    public GameProduceVisitor(GameModel model, String currentPlayer, GameAction action) {
         super(model, currentPlayer, action);
-        this.player = model.getPlayer(currentPlayer);
+        Player player = model.getPlayer(currentPlayer);
         this.currentLocation = model.getLocation(player.getCurrentLocation());
     }
 

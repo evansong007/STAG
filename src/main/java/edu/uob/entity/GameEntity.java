@@ -1,6 +1,6 @@
 package edu.uob.entity;
 
-import edu.uob.GameVistor;
+import edu.uob.GameVisitor;
 
 public abstract class GameEntity
 {
@@ -23,7 +23,7 @@ public abstract class GameEntity
         return description;
     }
 
-    public abstract void accept(GameVistor vistor);
+    public abstract void accept(GameVisitor vistor);
 
 
 

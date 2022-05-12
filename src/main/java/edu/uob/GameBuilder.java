@@ -20,9 +20,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.TreeMap;
 
 public class GameBuilder {
     public File actionsFile;
@@ -41,11 +38,11 @@ public class GameBuilder {
         try{
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document document = builder.parse(actionsFile);
-            DocumentTraversal trav = (DocumentTraversal) document;
+            DocumentTraversal map = (DocumentTraversal) document;
 
 
             MyFilter filter = new MyFilter();
-            NodeIterator it = trav.createNodeIterator(document.getDocumentElement(),
+            NodeIterator it = map.createNodeIterator(document.getDocumentElement(),
                     NodeFilter.SHOW_ELEMENT, filter, true);
 
             for (Node node = it.nextNode(); node != null;
@@ -54,7 +51,7 @@ public class GameBuilder {
                 makeAction(action,model);
             }
         } catch (ParserConfigurationException | SAXException | IOException | DOMException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
 
@@ -80,7 +77,7 @@ public class GameBuilder {
         NodeList keywords = triggers.getElementsByTagName("keyword");
 
         for (int i = 0; i < keywords.getLength(); i++) {
-            String keyword = keywords.item(i).getTextContent();
+            String keyword = keywords.item(i).getTextContent().toLowerCase();
             GameAction movement = new GameAction();
             movement.setTrigger(keyword);
             model.addTrigger(keyword);
@@ -89,7 +86,7 @@ public class GameBuilder {
             Element subjects = (Element) action.getElementsByTagName("subjects").item(0);
             NodeList entities = subjects.getElementsByTagName("entity");
             for (int m = 0; m < entities.getLength(); m++) {
-                String entity = entities.item(m).getTextContent();
+                String entity = entities.item(m).getTextContent().toLowerCase();
                 model.addsubject(entity);
                 movement.addSubject(entity);
             }
@@ -98,7 +95,7 @@ public class GameBuilder {
             Element consumed = (Element) action.getElementsByTagName("consumed").item(0);
             NodeList consumables = consumed.getElementsByTagName("entity");
             for (int m = 0; m < consumables.getLength(); m++) {
-                String consumable = consumables.item(m).getTextContent();
+                String consumable = consumables.item(m).getTextContent().toLowerCase();
                 movement.addConsumed(consumable);
             }
 
@@ -106,12 +103,12 @@ public class GameBuilder {
             Element produced = (Element) action.getElementsByTagName("produced").item(0);
             NodeList produces = produced.getElementsByTagName("entity");
             for (int m = 0; m < produces.getLength(); m++) {
-                String produce = produces.item(m).getTextContent();
+                String produce = produces.item(m).getTextContent().toLowerCase();
                 movement.addProduced(produce);
             }
 
             //set narration to action
-            String narration = action.getElementsByTagName("narration").item(0).getTextContent();
+            String narration = action.getElementsByTagName("narration").item(0).getTextContent().toLowerCase();
             movement.setNarration(narration);
 
             model.addAction(movement);
@@ -127,16 +124,16 @@ public class GameBuilder {
             ArrayList<Graph> sections = wholeDocument.getSubgraphs();
             ArrayList<Graph> locations = sections.get(0).getSubgraphs();
             Graph firstLocation = locations.get(0);
-            String Name = firstLocation.getNodes(false).get(0).getId().getId();
+            String Name = firstLocation.getNodes(false).get(0).getId().getId().toLowerCase();
             model.setStartLocation(Name);
 
-            //read loaction form .dot
+            //read location form .dot
             for (Graph location : locations) {
                 com.alexmerz.graphviz.objects.Node locationDetails = location.getNodes(false).get(0);
                 // read name and description of location
-                String locationName = locationDetails.getId().getId();
+                String locationName = locationDetails.getId().getId().toLowerCase();
                 model.addsubject(locationName);
-                String description = locationDetails.getAttribute("description");
+                String description = locationDetails.getAttribute("description").toLowerCase();
                 Location locationMap = new Location(locationName, description);
                 model.addLocation(locationMap);
                 ArrayList<Graph> entityList = location.getSubgraphs();
@@ -150,7 +147,7 @@ public class GameBuilder {
                 readPathOfLocation(edge);
             }
         } catch (FileNotFoundException | ParseException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
 
@@ -162,18 +159,12 @@ public class GameBuilder {
         }
         String TypeOfEntity = entity.getId().getId();
         for (com.alexmerz.graphviz.objects.Node node: nodes) {
-            String entityName = node.getId().getId();
-            String description = node.getAttribute("description");
-            switch (TypeOfEntity){
-                case "artefacts":
-                    location.addEntity(new Artefact(entityName,description));
-                    break;
-                case "furniture":
-                    location.addEntity(new Furniture(entityName,description));
-                    break;
-                case "characters":
-                    location.addEntity(new Character(entityName,description));
-                    break;
+            String entityName = node.getId().getId().toLowerCase();
+            String description = node.getAttribute("description").toLowerCase();
+            switch (TypeOfEntity) {
+                case "artefacts" -> location.addEntity(new Artefact(entityName, description));
+                case "furniture" -> location.addEntity(new Furniture(entityName, description));
+                case "characters" -> location.addEntity(new Character(entityName, description));
             }
         }
 
@@ -182,9 +173,9 @@ public class GameBuilder {
     //read path of location
     public void readPathOfLocation(Edge edge){
         com.alexmerz.graphviz.objects.Node fromLocation = edge.getSource().getNode();
-        String fromName = fromLocation.getId().getId();
+        String fromName = fromLocation.getId().getId().toLowerCase();
         com.alexmerz.graphviz.objects.Node toLocation = edge.getTarget().getNode();
-        String toName = toLocation.getId().getId();
+        String toName = toLocation.getId().getId().toLowerCase();
         Location location = model.getLocationsMap().get(fromName);
         location.addDestination(toName);
     }

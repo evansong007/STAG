@@ -3,14 +3,14 @@ package edu.uob;
 import edu.uob.entity.*;
 import edu.uob.entity.Character;
 
-public class GameConsumed extends GameVistor{
-    private Player player;
+public class GameConsumeVisitor extends GameVisitor {
+    private final Player player;
 
-    private Location currentLocation;
+    private final Location currentLocation;
 
-    private Location stroeroom;
+    private final Location stroeroom;
 
-    public GameConsumed(GameModel model, String currentPlayer, GameAction action) {
+    public GameConsumeVisitor(GameModel model, String currentPlayer, GameAction action) {
         super(model, currentPlayer, action);
         this.player = model.getPlayer(currentPlayer);
         this.currentLocation = model.getLocation(player.getCurrentLocation());

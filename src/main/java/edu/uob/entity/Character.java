@@ -1,6 +1,6 @@
 package edu.uob.entity;
 
-import edu.uob.GameVistor;
+import edu.uob.GameVisitor;
 
 public class Character extends GameEntity{
     public Character(String name, String description) {
@@ -8,7 +8,7 @@ public class Character extends GameEntity{
     }
 
     @Override
-    public void accept(GameVistor vistor) {
+    public void accept(GameVisitor vistor) {
         vistor.interactWithEntity(this);
     }
 

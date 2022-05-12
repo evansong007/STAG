@@ -25,6 +25,7 @@ public class ReadFileTests {
         basicBuilder = new GameBuilder(entitiesFile,actionsFile);
         basicBuilder.importActions();
         basicBuilder.importEntities();
+
     }
 
     @Test
