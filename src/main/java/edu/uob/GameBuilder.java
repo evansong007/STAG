@@ -22,10 +22,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameBuilder {
-    public File actionsFile;
-    public File entitiesFile;
+    public final File actionsFile;
+    public final File entitiesFile;
 
-    public GameModel model;
+    public final GameModel model;
 
     public GameBuilder(File entitiesFile, File actionsFile) {
         this.actionsFile = actionsFile;
@@ -35,7 +35,7 @@ public class GameBuilder {
 
     //reader actions form XML File
     public void importActions() {
-        try{
+        try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document document = builder.parse(actionsFile);
             DocumentTraversal map = (DocumentTraversal) document;
@@ -48,7 +48,7 @@ public class GameBuilder {
             for (Node node = it.nextNode(); node != null;
                  node = it.nextNode()) {
                 Element action = (Element) node;
-                makeAction(action,model);
+                makeAction(action, model);
             }
         } catch (ParserConfigurationException | SAXException | IOException | DOMException e) {
             System.out.println(e.getMessage());
@@ -72,7 +72,7 @@ public class GameBuilder {
         }
     }
 
-    public void makeAction(Element action,GameModel model) {
+    public void makeAction(Element action, GameModel model) {
         Element triggers = (Element) action.getElementsByTagName("triggers").item(0);
         NodeList keywords = triggers.getElementsByTagName("keyword");
 
@@ -138,12 +138,12 @@ public class GameBuilder {
                 model.addLocation(locationMap);
                 ArrayList<Graph> entityList = location.getSubgraphs();
                 for (Graph entity : entityList) {
-                    readEntityFormLocation(locationMap,entity);
+                    readEntityFormLocation(locationMap, entity);
                 }
             }
 
             ArrayList<Edge> paths = sections.get(1).getEdges();
-            for (Edge edge: paths) {
+            for (Edge edge : paths) {
                 readPathOfLocation(edge);
             }
         } catch (FileNotFoundException | ParseException e) {
@@ -152,13 +152,13 @@ public class GameBuilder {
     }
 
     //read entity in the location
-    public void readEntityFormLocation(Location location,Graph entity){
+    public void readEntityFormLocation(Location location, Graph entity) {
         ArrayList<com.alexmerz.graphviz.objects.Node> nodes = entity.getNodes(false);
-        if(nodes.isEmpty()){
+        if (nodes.isEmpty()) {
             return;
         }
         String TypeOfEntity = entity.getId().getId();
-        for (com.alexmerz.graphviz.objects.Node node: nodes) {
+        for (com.alexmerz.graphviz.objects.Node node : nodes) {
             String entityName = node.getId().getId().toLowerCase();
             model.addSubject(entityName);
             String description = node.getAttribute("description").toLowerCase();
@@ -172,7 +172,7 @@ public class GameBuilder {
     }
 
     //read path of location
-    public void readPathOfLocation(Edge edge){
+    public void readPathOfLocation(Edge edge) {
         com.alexmerz.graphviz.objects.Node fromLocation = edge.getSource().getNode();
         String fromName = fromLocation.getId().getId().toLowerCase();
         com.alexmerz.graphviz.objects.Node toLocation = edge.getTarget().getNode();
@@ -181,7 +181,7 @@ public class GameBuilder {
         location.addDestination(toName);
     }
 
-    public GameModel getModel(){
+    public GameModel getModel() {
         return model;
     }
 }

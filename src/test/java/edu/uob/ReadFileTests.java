@@ -9,41 +9,17 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ReadFileTests {
-    private GameBuilder basicBuilder;
-    private GameBuilder extendedBuilder;
-
-
-    @Test
-    void basicactionTest() {
-        File entitiesFile = Paths.get("config/basic-entities.dot").toAbsolutePath().toFile();
-        File actionsFile = Paths.get("config/basic-actions.xml").toAbsolutePath().toFile();
-        basicBuilder = new GameBuilder(entitiesFile,actionsFile);
-        basicBuilder.importActions();
-        basicBuilder.importEntities();
-
-    }
-
-    @Test
-    void extendedActionTest() {
-        File extendedEntitiesFile = Paths.get("config/extended-entities.dot").toAbsolutePath().toFile();
-        File extendedActionsFile = Paths.get("config/extended-actions.xml").toAbsolutePath().toFile();
-        extendedBuilder = new GameBuilder(extendedEntitiesFile,extendedActionsFile);
-        extendedBuilder.importActions();
-        extendedBuilder.importEntities();
-    }
 
     @Test
     void testExtendedEntity(){
         File extendedEntitiesFile = Paths.get("config/extended-entities.dot").toAbsolutePath().toFile();
         File extendedActionsFile = Paths.get("config/extended-actions.xml").toAbsolutePath().toFile();
-        extendedBuilder = new GameBuilder(extendedEntitiesFile,extendedActionsFile);
+        GameBuilder extendedBuilder = new GameBuilder(extendedEntitiesFile,extendedActionsFile);
         extendedBuilder.importActions();
         extendedBuilder.importEntities();
         GameModel model = extendedBuilder.getModel();
         Set<String> subjects = model.getSubjectList();
-        for (String subject: subjects) {
-            System.out.println(subject);
-        }
+        //test read entity form file
         assertTrue(subjects.contains("cabin"));
         assertTrue(subjects.contains("potion"));
         assertTrue(subjects.contains("axe"));
@@ -66,6 +42,21 @@ public class ReadFileTests {
         assertTrue(subjects.contains("gold"));
         assertTrue(subjects.contains("hole"));
 
+        //test read trigger form file
+        Set<String> triggers = model.getTriggerList();
+        assertTrue(triggers.contains("open"));
+        assertTrue(triggers.contains("unlock"));
+        assertTrue(triggers.contains("chop"));
+        assertTrue(triggers.contains("cut"));
+        assertTrue(triggers.contains("cutdown"));
+        assertTrue(triggers.contains("drink"));
+        assertTrue(triggers.contains("fight"));
+        assertTrue(triggers.contains("hit"));
+        assertTrue(triggers.contains("attack"));
+        assertTrue(triggers.contains("pay"));
+        assertTrue(triggers.contains("bridge"));
+        assertTrue(triggers.contains("dig"));
+        assertTrue(triggers.contains("blow"));
     }
 
 }

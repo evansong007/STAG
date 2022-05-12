@@ -21,7 +21,7 @@ final class ExtendedCommandTests {
     }
 
     @Test
-    void testGold(){
+    void testGold() {
         server.handleCommand("song: goto forest");
         server.handleCommand("song: get key");
         server.handleCommand("song: goto cabin");
@@ -53,7 +53,7 @@ final class ExtendedCommandTests {
     }
 
     @Test
-    void testdig(){
+    void testdig() {
         String[] wolk = {
                 "song: goto forest",
                 "song: get key",
@@ -74,12 +74,11 @@ final class ExtendedCommandTests {
                 "song: dig shovel",
                 "song: get hole",
                 "song: look",
-
         };
 
-//        for (String command: wolk) {
-//            System.out.println(server.handleCommand(command));
-//            System.out.println("-------------------------------------");
-//        }
+        for (String command : wolk) {
+            System.out.println(server.handleCommand(command));
+            System.out.println("-------------------------------------");
+        }
     }
 }

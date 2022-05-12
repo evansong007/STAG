@@ -96,6 +96,9 @@ final class BasicCommandTests {
     //test no username
     String word1 = server.handleCommand("goto cellar").toLowerCase();
     assertTrue(word1.contains("warning"));
+    //test invalid username
+    String word10 = server.handleCommand("Play1:look").toLowerCase();
+    assertTrue(word10.contains("warning"));
     //test too many trigger
     String word2 = server.handleCommand("Song:look and goto forest").toLowerCase();
     assertTrue(word2.contains("warning"));

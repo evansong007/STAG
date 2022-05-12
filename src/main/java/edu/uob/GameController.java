@@ -96,8 +96,8 @@ public class GameController {
         int numberOfCanBeGet = 0;
         String target = "";
         for (String subject : subjectOfCommand) {
-            if(currentLocation.getEntitylist().containsKey(subject)){
-                if(currentLocation.getEntity(subject) instanceof Artefact){
+            if (currentLocation.getEntitylist().containsKey(subject)) {
+                if (currentLocation.getEntity(subject) instanceof Artefact) {
                     numberOfCanBeGet += 1;
                     target = subject;
                 }
@@ -113,7 +113,7 @@ public class GameController {
         } else {
             throw new GameException.CommandException("Ambiguous Command");
         }
-        return result + target ;
+        return result + target;
     }
 
     public String executeDrop(Player currentPlayer) throws GameException.CommandException {
@@ -227,26 +227,27 @@ public class GameController {
             if (entity.equals("health")) {
                 player.accept(consumed);
                 if (player.getHealth() == 0) {
-                     return playerDead(player,currentLocation);
+                    return playerDead(player, currentLocation);
                 }
             } else {
                 boolean findSubject = false;
-                if(model.getLocationsMap().containsKey(entity)){
+                if (model.getLocationsMap().containsKey(entity)) {
                     model.getLocation(entity).accept(consumed);
                     findSubject = true;
-                }else {
+                } else {
                     for (Location location : model.getLocationsMap().values()) {
                         if (location.getEntitylist().containsKey(entity)) {
                             location.getEntity(entity).accept(consumed);
                             findSubject = true;
                         }
                     }
-                    if(player.getInventory().containsKey(entity)){
+                    if (player.getInventory().containsKey(entity)) {
                         player.dropArtefect(entity).accept(consumed);
-                        findSubject =true;
+                        findSubject = true;
                     }
                 }
-                if(!findSubject)throw new GameException.CommandException("Warning: Game error,Could not produce subject");
+                if (!findSubject)
+                    throw new GameException.CommandException("Warning: Game error,Could not produce subject");
 
             }
         }
@@ -255,15 +256,15 @@ public class GameController {
             if (entity.equals("health")) {
                 player.accept(produced);
             } else {
-                if(model.getLocationsMap().containsKey(entity)){
+                if (model.getLocationsMap().containsKey(entity)) {
                     model.getLocation(entity).accept(produced);
-                }else {
+                } else {
                     for (Location location : model.getLocationsMap().values()) {
                         if (location.getEntitylist().containsKey(entity)) {
                             location.getEntity(entity).accept(produced);
                         }
                     }
-                    if(player.getInventory().containsKey(entity)){
+                    if (player.getInventory().containsKey(entity)) {
                         player.dropArtefect(entity).accept(produced);
                     }
                 }

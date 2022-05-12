@@ -1,6 +1,7 @@
 package edu.uob;
 
 import edu.uob.GameException.GameException;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,7 +12,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Paths;
 
-/** This class implements the STAG server. */
+/**
+ * This class implements the STAG server.
+ */
 public final class GameServer {
 
     private static final char END_OF_TRANSMISSION = 4;
@@ -25,33 +28,32 @@ public final class GameServer {
     }
 
     /**
-    * KEEP this signature (i.e. {@code edu.uob.GameServer(File, File)}) otherwise we won't be able to mark
-    * your submission correctly.
-    *
-    * <p>You MUST use the supplied {@code entitiesFile} and {@code actionsFile}
-    *
-    * @param entitiesFile The game configuration file containing all game entities to use in your game
-    * @param actionsFile The game configuration file containing all game actions to use in your game
-    *
-    */
-    public GameServer(File entitiesFile, File actionsFile){
+     * KEEP this signature (i.e. {@code edu.uob.GameServer(File, File)}) otherwise we won't be able to mark
+     * your submission correctly.
+     *
+     * <p>You MUST use the supplied {@code entitiesFile} and {@code actionsFile}
+     *
+     * @param entitiesFile The game configuration file containing all game entities to use in your game
+     * @param actionsFile  The game configuration file containing all game actions to use in your game
+     */
+    public GameServer(File entitiesFile, File actionsFile) {
         // TODO implement your server logic here
-            GameBuilder builder = new GameBuilder(entitiesFile,actionsFile);
-            builder.importActions();
-            builder.importEntities();
-            model = builder.getModel();
+        GameBuilder builder = new GameBuilder(entitiesFile, actionsFile);
+        builder.importActions();
+        builder.importEntities();
+        model = builder.getModel();
     }
 
     /**
-    * KEEP this signature (i.e. {@code edu.uob.GameServer.handleCommand(String)}) otherwise we won't be
-    * able to mark your submission correctly.
-    *
-    * <p>This method handles all incoming game commands and carries out the corresponding actions.
-    */
+     * KEEP this signature (i.e. {@code edu.uob.GameServer.handleCommand(String)}) otherwise we won't be
+     * able to mark your submission correctly.
+     *
+     * <p>This method handles all incoming game commands and carries out the corresponding actions.
+     */
     public String handleCommand(String command) {
         // TODO implement your server logic here
         try {
-            GameController controller = new GameController(model,command);
+            GameController controller = new GameController(model, command);
             return controller.executeCommand();
         } catch (GameException e) {
             return e.getMessage();
@@ -62,15 +64,15 @@ public final class GameServer {
     //  === Methods below are there to facilitate server related operations. ===
 
     /**
-    * Starts a *blocking* socket server listening for new connections. This method blocks until the
-    * current thread is interrupted.
-    *
-    * <p>This method isn't used for marking. You shouldn't have to modify this method, but you can if
-    * you want to.
-    *
-    * @param portNumber The port to listen on.
-    * @throws IOException If any IO related operation fails.
-    */
+     * Starts a *blocking* socket server listening for new connections. This method blocks until the
+     * current thread is interrupted.
+     *
+     * <p>This method isn't used for marking. You shouldn't have to modify this method, but you can if
+     * you want to.
+     *
+     * @param portNumber The port to listen on.
+     * @throws IOException If any IO related operation fails.
+     */
     public void blockingListenOn(int portNumber) throws IOException {
         try (ServerSocket s = new ServerSocket(portNumber)) {
             System.out.println("Server listening on port " + portNumber);
@@ -85,21 +87,21 @@ public final class GameServer {
     }
 
     /**
-    * Handles an incoming connection from the socket server.
-    *
-    * <p>This method isn't used for marking. You shouldn't have to modify this method, but you can if
-    * * you want to.
-    *
-    * @param serverSocket The client socket to read/write from.
-    * @throws IOException If any IO related operation fails.
-    */
+     * Handles an incoming connection from the socket server.
+     *
+     * <p>This method isn't used for marking. You shouldn't have to modify this method, but you can if
+     * * you want to.
+     *
+     * @param serverSocket The client socket to read/write from.
+     * @throws IOException If any IO related operation fails.
+     */
     private void blockingHandleConnection(ServerSocket serverSocket) throws IOException {
         try (Socket s = serverSocket.accept();
              BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream()));
              BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()))) {
             System.out.println("Connection established");
             String incomingCommand = reader.readLine();
-            if(incomingCommand != null) {
+            if (incomingCommand != null) {
                 System.out.println("Received message from " + incomingCommand);
                 String result = handleCommand(incomingCommand);
                 writer.write(result);

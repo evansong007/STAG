@@ -8,13 +8,13 @@ public class GameConsumeVisitor extends GameVisitor {
 
     private final Location currentLocation;
 
-    private final Location stroeroom;
+    private final Location storeroom;
 
     public GameConsumeVisitor(GameModel model, String currentPlayer, GameAction action) {
         super(model, currentPlayer, action);
         this.player = model.getPlayer(currentPlayer);
         this.currentLocation = model.getLocation(player.getCurrentLocation());
-        this.stroeroom = model.getStroeroom();
+        this.storeroom = model.getStoreroom();
     }
 
 
@@ -22,20 +22,20 @@ public class GameConsumeVisitor extends GameVisitor {
     public void interactWithEntity(Artefact artefact) {
         this.player.dropArtefect(artefact.getName());
         this.currentLocation.removeEntity(artefact.getName());
-        this.stroeroom.addEntity(artefact);
+        this.storeroom.addEntity(artefact);
 
     }
 
     @Override
     public void interactWithEntity(Character character) {
-        this.stroeroom.addEntity(character);
+        this.storeroom.addEntity(character);
         this.currentLocation.removeEntity(currentPlayer);
 
     }
 
     @Override
     public void interactWithEntity(Furniture furniture) {
-        this.stroeroom.addEntity(furniture);
+        this.storeroom.addEntity(furniture);
         this.currentLocation.removeEntity(furniture.getName());
     }
 

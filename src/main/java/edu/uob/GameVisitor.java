@@ -11,7 +11,7 @@ public abstract class GameVisitor {
     GameAction action;
 
 
-    public GameVisitor(GameModel model, String currentPlayer, GameAction action){
+    public GameVisitor(GameModel model, String currentPlayer, GameAction action) {
         this.model = model;
         this.currentPlayer = currentPlayer;
         this.action = action;
