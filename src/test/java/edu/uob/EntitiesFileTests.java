@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.File;
+import java.util.Set;
+
 import com.alexmerz.graphviz.Parser;
 import com.alexmerz.graphviz.ParseException;
 import com.alexmerz.graphviz.objects.Graph;
@@ -50,5 +52,6 @@ final class EntitiesFileTests {
           fail("ParseException was thrown when attempting to read basic entities file");
       }
   }
+
 
 }

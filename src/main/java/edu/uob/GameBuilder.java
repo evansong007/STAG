@@ -87,7 +87,7 @@ public class GameBuilder {
             NodeList entities = subjects.getElementsByTagName("entity");
             for (int m = 0; m < entities.getLength(); m++) {
                 String entity = entities.item(m).getTextContent().toLowerCase();
-                model.addsubject(entity);
+                model.addSubject(entity);
                 movement.addSubject(entity);
             }
 
@@ -132,7 +132,7 @@ public class GameBuilder {
                 com.alexmerz.graphviz.objects.Node locationDetails = location.getNodes(false).get(0);
                 // read name and description of location
                 String locationName = locationDetails.getId().getId().toLowerCase();
-                model.addsubject(locationName);
+                model.addSubject(locationName);
                 String description = locationDetails.getAttribute("description").toLowerCase();
                 Location locationMap = new Location(locationName, description);
                 model.addLocation(locationMap);
@@ -160,6 +160,7 @@ public class GameBuilder {
         String TypeOfEntity = entity.getId().getId();
         for (com.alexmerz.graphviz.objects.Node node: nodes) {
             String entityName = node.getId().getId().toLowerCase();
+            model.addSubject(entityName);
             String description = node.getAttribute("description").toLowerCase();
             switch (TypeOfEntity) {
                 case "artefacts" -> location.addEntity(new Artefact(entityName, description));

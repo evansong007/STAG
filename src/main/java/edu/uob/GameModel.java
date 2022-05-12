@@ -54,7 +54,7 @@ public class GameModel {
         triggerList.add(trigger);
     }
 
-    public void addsubject(String subject){
+    public void addSubject(String subject){
         subjectList.add(subject);
     }
 
